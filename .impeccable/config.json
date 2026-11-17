@@ -11,6 +11,24 @@
         ],
         "createdAt": "2026-11-12T14:35:21.960Z",
         "reason": "agent decided: #f3f2ed is the project's pre-existing brand background (frontend/cliente/css/cliente.css --bg), kept so the admin login matches the client and employee areas"
+      },
+      {
+        "rule": "overused-font",
+        "value": "plus jakarta sans",
+        "files": [
+          "frontend/cliente/index.html"
+        ],
+        "createdAt": "2026-11-17T13:07:19.827Z",
+        "reason": "agent decided: Plus Jakarta Sans is the project's established brand font, used by every area (cliente, funcionario, admin, publico)"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "frontend/cliente/index.html"
+        ],
+        "createdAt": "2026-11-17T13:07:19.835Z",
+        "reason": "agent decided: #f3f2ed is the project's pre-existing brand background shared by all areas; changing it only here would break consistency"
       }
     ]
   }
