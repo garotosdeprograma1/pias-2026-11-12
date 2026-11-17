@@ -12,16 +12,16 @@
   --bg: #f3f2ed; --bg-soft: #f7f6f2; --bg-muted: #ebe9e0;
   --surface: #ffffff;
   --border: #dfe3dc; --border-strong: #bcc6bd;
-  --text: #202a24; --text-muted: #5f6b63; --text-soft: #89938c;
+  --text: #202a24; --text-muted: #5f6b63; --text-soft: #666f69;
   --primary: #203b30; --primary-hover: #2c4a3c; --primary-soft: #dce7de; --on-primary: #ffffff;
-  --accent: #b95d43; --accent-hover: #9f4b34; --accent-soft: #f5e8e3; --on-accent: #ffffff;
+  --accent: #b65b42; --accent-hover: #9f4b34; --accent-text: #9f4b34; --accent-soft: #f5e8e3; --on-accent: #ffffff;
   --success: #2f704b; --success-soft: #e6f1e9;
   --warning: #8a6420; --warning-soft: #f8eedb;
   --danger: #b03a3a; --danger-soft: #fbecea;
   --info: #3d5f73; --info-soft: #e6eef2;
   --neutral-soft: #eeede7;
   --brand: #203b30; --on-brand: #eef2e8; --on-brand-muted: #b9cbbd;
-  --ring: #b95d43;
+  --ring: #b65b42;
   --shadow-xs: 0 1px 2px rgb(22 38 30 / 4%);
   --shadow-sm: 0 2px 8px rgb(22 38 30 / 6%);
   --shadow-lg: 0 24px 56px -20px rgb(22 38 30 / 28%);
@@ -37,7 +37,7 @@
   --border: #303a33; --border-strong: #465349;
   --text: #f0f2ec; --text-muted: #b1bbb3; --text-soft: #8e9a91;
   --primary: #dce7de; --primary-hover: #ffffff; --primary-soft: rgb(220 231 222 / 12%); --on-primary: #15251d;
-  --accent: #e18a6e; --accent-hover: #f0a087; --accent-soft: rgb(225 138 110 / 14%); --on-accent: #1b1410;
+  --accent: #e18a6e; --accent-hover: #f0a087; --accent-text: #e18a6e; --accent-soft: rgb(225 138 110 / 14%); --on-accent: #1b1410;
   --success: #82c49a; --success-soft: rgb(130 196 154 / 14%);
   --warning: #e5b567; --warning-soft: rgb(229 181 103 / 14%);
   --danger: #f08d86; --danger-soft: rgb(240 141 134 / 14%);
@@ -164,7 +164,7 @@ button:disabled { cursor: not-allowed; }
 .btn--sm { min-height: 34px; padding: 6px 12px; font-size: 13px; }
 .btn--block { width: 100%; }
 .btn .icon { width: 16px; height: 16px; }
-.link { color: var(--accent); font-weight: 600; font-size: 13px; }
+.link { color: var(--accent-text); font-weight: 600; font-size: 13px; }
 .link:hover { text-decoration: underline; }
 
 .field { display: grid; gap: 6px; min-width: 0; font-size: 13px; font-weight: 600; }
@@ -238,7 +238,7 @@ button:disabled { cursor: not-allowed; }
 .badge--warning { background: var(--warning-soft); color: var(--warning); }
 .badge--danger { background: var(--danger-soft); color: var(--danger); }
 .badge--info { background: var(--info-soft); color: var(--info); }
-.badge--accent { background: var(--accent-soft); color: var(--accent); }
+.badge--accent { background: var(--accent-soft); color: var(--accent-text); }
 .badge--primary { background: var(--primary-soft); color: var(--text); }
 
 .toolbar { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; padding: 16px 24px; }

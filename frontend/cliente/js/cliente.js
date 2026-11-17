@@ -807,6 +807,10 @@
        document.addEventListener('click', (e) => {
          if (NotifPanel.open && !e.target.closest('.notifications')) NotifPanel.toggle(false);
        });
+       // Esc fecha o painel e devolve o foco ao botão, como na área do profissional.
+       document.addEventListener('keydown', (e) => {
+         if (e.key === 'Escape' && NotifPanel.open) { NotifPanel.toggle(false); $('#notif-btn').focus(); }
+       });
      },
    };
 

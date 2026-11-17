@@ -2,8 +2,8 @@
 :root {
   color-scheme: light;
   --bg: #f3f2ed; --surface: #ffffff; --border: #dfe3dc; --border-strong: #bcc6bd;
-  --text: #202a24; --text-muted: #5f6b63; --text-soft: #89938c;
-  --accent: #b95d43; --accent-hover: #9f4b34; --on-accent: #ffffff;
+  --text: #202a24; --text-muted: #5f6b63; --text-soft: #666f69;
+  --accent: #b65b42; --accent-hover: #9f4b34; --on-accent: #ffffff;
   --danger: #b03a3a; --danger-soft: #fbecea;
   --brand: #203b30; --on-brand: #eef2e8; --on-brand-muted: #b9cbbd;
 }
