@@ -48,6 +48,18 @@ async function jsonBody(req) {
       return d2 === parseInt(cpf[10]);
     }
 
+function validarCnpj(cnpj) {
+  cnpj = (cnpj || '').replace(/\D/g, '');
+  if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
+  const digit = length => {
+    let sum = 0, weight = length - 7;
+    for (let i = 0; i < length; i++) { sum += Number(cnpj[i]) * weight--; if (weight < 2) weight = 9; }
+    const rest = sum % 11;
+    return rest < 2 ? 0 : 11 - rest;
+  };
+  return digit(12) === Number(cnpj[12]) && digit(13) === Number(cnpj[13]);
+}
+
 function cadastrarConta(req, res, perfil) {
   var texto = '', tamanho = 0;
   req.on('data', function(chunk) { tamanho += chunk.length; if(tamanho <= 16384) texto += chunk; });
@@ -55,18 +67,27 @@ function cadastrarConta(req, res, perfil) {
     if(tamanho > 16384) return responderJson(res,413,{erro:'Dados muito longos.'});
     var novo;
     try { novo=JSON.parse(texto); } catch { return responderJson(res,400,{erro:'Dados inválidos.'}); }
-    if(!novo || Array.isArray(novo) || !['nome','email','cpf','telefone','senha'].every(function(k){return typeof novo[k]==='string' && novo[k].trim();})) return responderJson(res,400,{erro:'Preencha nome, e-mail, CPF, telefone e senha.'});
-    novo.nome=novo.nome.trim();novo.email=novo.email.trim().toLowerCase();novo.cpf=novo.cpf.replace(/\D/g,'');novo.telefone=novo.telefone.replace(/\D/g,'');
-    if(novo.nome.length<3 || novo.nome.length>150 || novo.email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(novo.email) || !validarCpf(novo.cpf) || ![10,11].includes(novo.telefone.length) || novo.senha.length<8 || novo.senha.length>128) return responderJson(res,400,{erro:'Confira nome, e-mail, CPF (11 dígitos), telefone e senha (8 a 128 caracteres).'});
+    if(!novo || Array.isArray(novo) || typeof novo!=='object') return responderJson(res,400,{erro:'Dados inválidos.'});
+    var tipo=novo.tipo_pessoa===undefined?'fisica':novo.tipo_pessoa;
+    if(!['fisica','juridica'].includes(tipo)) return responderJson(res,400,{erro:'Escolha pessoa física ou empresa.'});
+    if(tipo==='juridica' && perfil!=='funcionario') return responderJson(res,400,{erro:'Somente profissionais podem se cadastrar como empresa.'});
+    var documento=tipo==='juridica'?'cnpj':'cpf';
+    if(!['nome','email',documento,'telefone','senha'].every(function(k){return typeof novo[k]==='string' && novo[k].trim();})) return responderJson(res,400,{erro:'Preencha nome, e-mail, '+(tipo==='juridica'?'CNPJ':'CPF')+', telefone e senha.'});
+    novo.nome=novo.nome.trim();novo.email=novo.email.trim().toLowerCase();novo.cpf=novo[documento].replace(/\D/g,'');novo.telefone=novo.telefone.replace(/\D/g,'');
+    if(tipo==='juridica') {
+      if(!validarCnpj(novo.cpf)) return responderJson(res,400,{erro:'Confira o CNPJ: são 14 dígitos com os verificadores corretos.'});
+      if(typeof novo.razao_social!=='string' || novo.razao_social.trim().length<3 || novo.razao_social.trim().length>150) return responderJson(res,400,{erro:'Informe o nome da empresa (de 3 a 150 caracteres).'});
+    }
+    if(novo.nome.length<3 || novo.nome.length>150 || novo.email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(novo.email) || (tipo==='fisica' && !validarCpf(novo.cpf)) || ![10,11].includes(novo.telefone.length) || novo.senha.length<8 || novo.senha.length>128) return responderJson(res,400,{erro:'Confira nome, e-mail, CPF (11 dígitos), telefone e senha (8 a 128 caracteres).'});
     if(perfil==='funcionario' && (typeof novo.especialidade!=='string' || !novo.especialidade.trim() || novo.especialidade.length>150)) return responderJson(res,400,{erro:'Informe sua especialidade.'});
     db.get('SELECT id FROM '+perfil+" WHERE LOWER(TRIM(email)) = ? OR REPLACE(REPLACE(cpf,'.',''),'-','') = ?",[novo.email,novo.cpf],function(erro,existente){
       if(erro) return responderJson(res,500,{erro:'Não foi possível verificar o cadastro.'});
-      if(existente) return responderJson(res,409,{erro:'Já existe uma conta com este e-mail ou CPF neste perfil.'});
+      if(existente) return responderJson(res,409,{erro:'Já existe uma conta com este e-mail ou '+(tipo==='juridica'?'CNPJ':'CPF')+' neste perfil.'});
       var campos='nome,cpf,email,telefone,senha', valores=[novo.nome,novo.cpf,novo.email,novo.telefone,auth.hash(novo.senha)];
-      if(perfil==='funcionario'){campos+=',especialidade,permissoes';valores.push(novo.especialidade.trim(),JSON.stringify(['pedidos.ler','pedidos.aceitar','pedidos.concluir','servicos.cadastrar']));}
+      if(perfil==='funcionario'){campos+=',especialidade,permissoes,tipo_pessoa,razao_social';valores.push(novo.especialidade.trim(),JSON.stringify(['pedidos.ler','pedidos.aceitar','pedidos.concluir','servicos.cadastrar']),tipo,tipo==='juridica'?novo.razao_social.trim():null);}
       db.run('INSERT INTO '+perfil+' ('+campos+') VALUES ('+valores.map(function(){return '?';}).join(',')+')',valores,function(erro){
-        if(erro) return responderJson(res,erro.code==='SQLITE_CONSTRAINT'?409:500,{erro:erro.code==='SQLITE_CONSTRAINT'?'E-mail ou CPF já cadastrado.':'Não foi possível cadastrar a conta.'});
-        responderJson(res,201,{id:this.lastID,nome:novo.nome,email:novo.email,telefone:novo.telefone,especialidade:perfil==='funcionario'?novo.especialidade.trim():undefined});
+        if(erro) return responderJson(res,erro.code==='SQLITE_CONSTRAINT'?409:500,{erro:erro.code==='SQLITE_CONSTRAINT'?'E-mail ou '+(tipo==='juridica'?'CNPJ':'CPF')+' já cadastrado.':'Não foi possível cadastrar a conta.'});
+        responderJson(res,201,{id:this.lastID,nome:novo.nome,email:novo.email,telefone:novo.telefone,especialidade:perfil==='funcionario'?novo.especialidade.trim():undefined,tipo_pessoa:perfil==='funcionario'?tipo:undefined,razao_social:tipo==='juridica'?novo.razao_social.trim():undefined});
       });
     });
   });
@@ -233,7 +254,7 @@ var servidor = http.createServer(async function (req, res) {
       if(match) {
         const table=({clientes:'cliente',funcionarios:'funcionario',admins:'admin'})[match[1]],id=Number(match[2]);
         const self=table==='admin' && id===session.usuario.id;
-        const [person]=await sqlAll('SELECT id,nome,email,cpf,telefone,ativo,criado_em,atualizado_em'+(table==='funcionario'?',especialidade,admissao,permissoes':'')+' FROM '+table+' WHERE id=?',[id]);
+        const [person]=await sqlAll('SELECT id,nome,email,cpf,telefone,ativo,criado_em,atualizado_em'+(table==='funcionario'?',especialidade,admissao,permissoes,tipo_pessoa,razao_social':'')+' FROM '+table+' WHERE id=?',[id]);
         if(!person)return responderJson(res,404,{erro:'Pessoa não encontrada.'});
         if(req.method==='GET') {
           const orders=table==='admin'?[]:await sqlAll('SELECT os.*,servico.nome_servico FROM os JOIN servico ON servico.id=os.id_servico WHERE '+(table==='cliente'?'id_cliente':'id_funcionario')+'=? ORDER BY os.id DESC',[id]);
@@ -253,7 +274,7 @@ var servidor = http.createServer(async function (req, res) {
         if(req.method==='PATCH') {
           const body=await jsonBody(req),fields=[],values=[];
           for(const key of Object.keys(body)) {
-            if(!['nome','email','telefone','ativo',...(table==='funcionario'?['especialidade','admissao','permissoes']:[])].includes(key))return responderJson(res,400,{erro:'Campo não permitido: '+key});
+            if(!['nome','email','telefone','ativo',...(table==='funcionario'?['especialidade','admissao','permissoes',...(person.tipo_pessoa==='juridica'?['razao_social']:[])]:[])].includes(key))return responderJson(res,400,{erro:'Campo não permitido: '+key});
             let value=body[key];
             if(key==='ativo') { if(![0,1].includes(value))throw new Error('Status inválido.');if(self && value===0)return responderJson(res,409,{erro:'Você não pode desativar a própria conta.'}); }
             else if(key==='permissoes') {
@@ -265,7 +286,7 @@ var servidor = http.createServer(async function (req, res) {
               if(typeof value!=='string')throw new Error('Dados inválidos.');value=value.trim();
               if(key==='email') {value=value.toLowerCase();if(value.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))throw new Error('E-mail inválido.');}
               else if(key==='telefone') {value=value.replace(/\D/g,'');if(![10,11].includes(value.length))throw new Error('Telefone inválido.');}
-              else if(value.length<3 || value.length>150)throw new Error('Informe nome e especialidade entre 3 e 150 caracteres.');
+              else if(value.length<3 || value.length>150)throw new Error(key==='razao_social'?'Informe o nome da empresa entre 3 e 150 caracteres.':'Informe nome e especialidade entre 3 e 150 caracteres.');
             }
             fields.push(key+'=?');values.push(value);
           }
@@ -462,7 +483,7 @@ var servidor = http.createServer(async function (req, res) {
 
   // ---- listar ----
   if (req.method === 'GET' && caminho === '/api/funcionarios') {
-    db.all('SELECT id, nome, cpf, email, telefone, especialidade, ativo, criado_em, atualizado_em, admissao, permissoes FROM funcionario ORDER BY id DESC', [], function (erro, linhas) {
+    db.all('SELECT id, nome, cpf, email, telefone, especialidade, ativo, criado_em, atualizado_em, admissao, permissoes, tipo_pessoa, razao_social FROM funcionario ORDER BY id DESC', [], function (erro, linhas) {
       if (erro) {
         return responderJson(res, 500, { erro: 'Não foi possível carregar os registros.' });
       }

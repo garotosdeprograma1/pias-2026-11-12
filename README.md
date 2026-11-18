@@ -47,6 +47,7 @@ tests/
   service-lifecycle.test.js Conclusão, avaliação e pagamentos demonstrativos
   admin-management.test.js  Catálogo, contas de administrador e auditoria
   contact.test.js           Formulário de contato, limites e mensagens no painel
+  company-signup.test.js    Cadastro de profissionais como pessoa física ou empresa
 ```
 
 Os arquivos específicos de cada área ficam junto das suas páginas, separados em `css/` e `js/`. Recursos usados por várias áreas ficam em `frontend/assets/`. Os endereços das páginas HTML foram preservados.
@@ -74,6 +75,19 @@ node --test tests/*.test.js
 ```
 
 Os testes usam as ferramentas nativas do Node.js. O teste da API cria um banco temporário e o remove ao terminar; não altera `backend/banco.db`. Os dados presentes nesses arquivos são exclusivos dos testes.
+
+## Profissionais: pessoa física ou empresa
+
+No cadastro de **Funcionário** (tela de login ou Administração → Pessoas), escolha
+**Pessoa física**, com CPF, ou **Empresa**, com CNPJ e nome da empresa. Clientes e
+administradores usam sempre CPF. O CNPJ é validado pelos dígitos verificadores no
+navegador e no servidor.
+
+A migração `funcionario_pj_v1` acrescenta `tipo_pessoa` (`fisica` ou `juridica`, padrão
+`fisica`) e `razao_social` à tabela `funcionario`. O documento continua na coluna `cpf`,
+que guarda 11 dígitos (CPF) ou 14 (CNPJ): renomeá-la exigiria reconstruir a tabela, que
+é referenciada por pedidos e serviços. Use `tipo_pessoa` para saber qual documento é.
+No painel, a lista mostra o selo **Empresa** e o perfil permite corrigir o nome da empresa.
 
 ## Contato e Central de ajuda
 

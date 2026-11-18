@@ -104,7 +104,7 @@ ul, ol { list-style: none; }
 .brand__logo { width: 40px; height: 40px; object-fit: cover; border-radius: 9px; flex-shrink: 0; display: block; box-shadow: none; }
 .brand__text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand__title { font-family: var(--font-serif); font-weight: 400; font-size: 28px; letter-spacing: -.035em; }
-.brand__subtitle { font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.brand__subtitle { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
 .sidebar__collapse { margin-left: auto; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; color: var(--text-muted); transition: background .2s, color .2s, transform .25s; }
 .sidebar__collapse:hover { background: var(--bg-muted); color: var(--text); }
 .sidebar__collapse svg { width: 16px; height: 16px; }
@@ -899,7 +899,7 @@ ul, ol { list-style: none; }
 @media (max-width: 480px) {
   .calendar { padding: 14px; }
   .calendar__grid { gap: 3px; }
-  .calendar__weekday { padding: 8px 0; font-size: 9px; letter-spacing: 0; }
+  .calendar__weekday { padding: 8px 0; font-size: 11px; letter-spacing: 0; }
   .calendar__day { aspect-ratio: auto; padding: 4px; }
   .modal__head, .modal__foot { flex-shrink: 0; }
   .modal__foot { flex-wrap: wrap; }
@@ -924,11 +924,24 @@ img[src="/assets/images/logo.png"]{border:0;border-radius:50%;clip-path:circle(4
 .available-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.available-order{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid var(--border)}.available-order>div{min-width:0;overflow-wrap:anywhere}.available-order p{margin:6px 0;color:var(--text-muted)}.available-order .btn{flex-shrink:0}.available-order:last-child{border-bottom:0}@media(max-width:600px){.available-order{align-items:flex-start;flex-direction:column}.available-order .btn{width:100%}}
 
 /* Cadastro e conclusão usam diálogos acessíveis com a identidade da área profissional. */
-.employee-dialog{width:min(540px,calc(100vw - 32px));max-height:90dvh;overflow:auto;border:1px solid var(--border);border-radius:20px;padding:28px;background:var(--surface,#fff);color:var(--text);box-shadow:0 20px 60px rgb(0 0 0 / 20%)}
+.employee-dialog{margin:auto;width:min(540px,calc(100vw - 32px));max-height:90dvh;overflow:auto;border:1px solid var(--border);border-radius:20px;padding:28px;background:var(--surface,#fff);color:var(--text);box-shadow:0 20px 60px rgb(0 0 0 / 20%)}
 .employee-dialog::backdrop{background:rgb(10 25 17 / 55%)}
-.employee-dialog h2{margin:0 0 16px}.employee-dialog p{margin:12px 0;overflow-wrap:anywhere}
+.employee-dialog h2{margin:0 0 16px}.employee-dialog p{margin:12px 0;overflow-wrap:break-word}.employee-dialog p[role=status]:empty{margin:0}
 .employee-dialog__actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap;margin-top:20px}
 .employee-service-form{display:grid;gap:16px}.employee-service-form label{display:grid;gap:8px;font-weight:600}.employee-service-form input,.employee-service-form textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg,#fff);color:var(--text);font:inherit}.employee-service-form textarea{resize:vertical}
 .employee-catalog-actions{margin:0 0 20px}.employee-catalog-actions>p{flex:1 1 240px}.employee-catalog-actions>[role=status]{flex-basis:100%;margin:0}
-#registeredOrders td{max-width:300px;white-space:normal;overflow-wrap:anywhere}#registeredOrders .btn{white-space:normal;min-width:135px}
+#registeredOrders td{max-width:300px;white-space:normal;overflow-wrap:break-word}
+#registeredOrders td:nth-child(4),#registeredOrders td:nth-child(6){white-space:nowrap}
+/* No celular, cada pedido vira um cartão: o nome da coluna aparece ao lado do valor. */
+@media(max-width:720px){
+  #registeredOrders .data-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  #registeredOrders .data-table,#registeredOrders .data-table tbody,#registeredOrders .data-table tr,#registeredOrders .data-table td{display:block;width:100%}
+  #registeredOrders .data-table tr{padding:14px 2px;border-bottom:1px solid var(--border)}
+  #registeredOrders .data-table tbody tr:last-child{border-bottom:0}
+  #registeredOrders .data-table td{display:flex;justify-content:space-between;align-items:baseline;gap:16px;max-width:none;padding:5px 0;border:0;text-align:right;white-space:normal}
+  #registeredOrders .data-table td::before{content:attr(data-label);flex-shrink:0;font-size:12.5px;font-weight:600;color:var(--text-muted);text-align:left}
+  #registeredOrders .data-table td.cell-action{justify-content:flex-end;padding-top:10px}
+  #registeredOrders .data-table td.cell-action::before{display:none}
+  #registeredOrders .data-table td.cell-action:not(:has(button)){display:none}
+}#registeredOrders .btn{white-space:normal;min-width:135px}
 @media(max-width:600px){.employee-dialog{padding:20px}.employee-dialog__actions .btn{flex:1 1 140px}}

@@ -152,6 +152,7 @@
   const endpoint = person => '/api/' + ({cliente: 'clientes', funcionario: 'funcionarios', admin: 'admins'})[person.perfil] + '/' + person.id;
   const digits = value => String(value || '').replace(/\D/g, '');
   const maskCpf = value => { const d = digits(value).slice(0, 11); return d.replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1-$2'); };
+  const maskCnpj = value => { const d = digits(value).slice(0, 14); return d.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d{1,2})$/, '$1-$2'); };
   const maskPhone = value => { const d = digits(value).slice(0, 11); if (d.length < 3) return d; if (d.length < 7) return '(' + d.slice(0, 2) + ') ' + d.slice(2); return '(' + d.slice(0, 2) + ') ' + d.slice(2, d.length - 4) + '-' + d.slice(-4); };
 
   async function people(user) {
@@ -175,13 +176,13 @@
       state.filtered = state.users.filter(u => (!state.role || u.perfil === state.role) && (!f.ativo || String(u.ativo ?? 1) === f.ativo) &&
         (!f.cargo || (u.especialidade || '').toLocaleLowerCase('pt-BR').includes(f.cargo.trim().toLocaleLowerCase('pt-BR'))) &&
         (!f.inicio || (u.criado_em && u.criado_em.slice(0, 10) >= f.inicio)) && (!f.fim || (u.criado_em && u.criado_em.slice(0, 10) <= f.fim)) &&
-        (!q || [u.nome, u.email].some(v => String(v || '').toLocaleLowerCase('pt-BR').includes(q)) || (qDigits && [u.telefone, u.cpf].some(v => digits(v).includes(qDigits)))))
+        (!q || [u.nome, u.email, u.razao_social].some(v => String(v || '').toLocaleLowerCase('pt-BR').includes(q)) || (qDigits && [u.telefone, u.cpf].some(v => digits(v).includes(qDigits)))))
         .sort((a, b) => f.ordem === 'nome' ? a.nome.localeCompare(b.nome, 'pt-BR') : f.ordem === 'antigo' ? String(a.criado_em || '').localeCompare(String(b.criado_em || '')) || a.id - b.id : String(b.criado_em || '').localeCompare(String(a.criado_em || '')) || b.id - a.id);
       const pages = Math.max(1, Math.ceil(state.filtered.length / 15)); state.page = Math.min(Math.max(1, state.page), pages);
       const slice = state.filtered.slice((state.page - 1) * 15, state.page * 15);
       $('#people-list').innerHTML = U.table(
         [{label: 'Pessoa', main: true}, {label: 'Telefone', cls: 'nowrap'}, {label: 'Perfil'}, {label: 'Especialidade'}, {label: 'Situação'}, {label: 'Cadastro', cls: 'nowrap'}, {label: 'Ações', cls: 'col-actions'}],
-        slice.map((u, i) => [U.identity(u.nome, u.email, u.perfil === 'admin' && u.id === user.id ? '(você)' : ''), E(U.phone(u.telefone)), U.roleBadge(u.perfil), u.especialidade ? E(u.especialidade) : '<span class="muted">—</span>', U.statusBadge(u.ativo), E(U.day(u.criado_em)), '<button type="button" class="btn btn--sm" data-person="' + i + '">' + U.icon('eye') + 'Abrir</button>']),
+        slice.map((u, i) => [U.identity(u.nome, u.email, u.perfil === 'admin' && u.id === user.id ? '(você)' : ''), E(U.phone(u.telefone)), U.roleBadge(u.perfil) + (u.tipo_pessoa === 'juridica' ? ' ' + U.badge('Empresa', '', true) : ''), u.especialidade ? E(u.especialidade) : '<span class="muted">—</span>', U.statusBadge(u.ativo), E(U.day(u.criado_em)), '<button type="button" class="btn btn--sm" data-person="' + i + '">' + U.icon('eye') + 'Abrir</button>']),
         {empty: U.empty(state.users.length ? 'Nenhuma conta corresponde aos filtros' : 'Nenhuma conta cadastrada', state.users.length ? 'Ajuste a pesquisa ou limpe os filtros.' : '', 'users')});
       $('#people-list').querySelectorAll('[data-person]').forEach(button => { button.onclick = () => openProfile(slice[Number(button.dataset.person)], button); });
       $('#people-count').textContent = U.plural(state.filtered.length, 'conta', 'contas');
@@ -204,7 +205,7 @@
     };
     $('#people-more').onclick = event => { state.more = !state.more; $('#people-extra').hidden = !state.more; event.currentTarget.setAttribute('aria-expanded', String(state.more)); event.currentTarget.textContent = state.more ? 'Menos filtros' : 'Mais filtros'; };
     $('#people-clear').onclick = () => { form.reset(); state.page = 1; render(); };
-    $('#people-export').onclick = () => D.csv('dafix-pessoas.csv', ['Nome', 'E-mail', 'Telefone', 'Perfil', 'Situação', 'Especialidade', 'Cadastro'], state.filtered.map(u => [u.nome, u.email, U.phone(u.telefone), U.ROLES[u.perfil][0], u.ativo === 0 ? 'Inativo' : 'Ativo', u.especialidade || '', u.criado_em ? U.stamp(u.criado_em) : '']));
+    $('#people-export').onclick = () => D.csv('dafix-pessoas.csv', ['Nome de usuário', 'E-mail', 'Telefone', 'Perfil', 'Tipo de cadastro', 'Empresa', 'Situação', 'Especialidade', 'Cadastro'], state.filtered.map(u => [u.nome, u.email, U.phone(u.telefone), U.ROLES[u.perfil][0], u.tipo_pessoa === 'juridica' ? 'Empresa' : 'Pessoa física', u.razao_social || '', u.ativo === 0 ? 'Inativo' : 'Ativo', u.especialidade || '', u.criado_em ? U.stamp(u.criado_em) : '']));
     $('#people-create').onclick = () => openCreate();
 
     async function openProfile(person, trigger) {
@@ -212,14 +213,15 @@
       trigger.disabled = true;
       try { data = await D.request(endpoint(person)); } catch (error) { return U.toast(error.message, 'error'); } finally { trigger.disabled = false; }
       const u = data.pessoa, staff = person.perfil === 'funcionario', admin = person.perfil === 'admin', self = admin && u.id === user.id, granted = staff ? permissionsOf(u) : [];
+      const company = staff && u.tipo_pessoa === 'juridica';
       const tabs = [['dados', 'Dados da conta'], ...(admin ? [] : [['pedidos', 'Pedidos (' + data.pedidos.length + ')']]), ['atividades', 'Atividades (' + data.historico.length + ')']];
       const dialog = U.openDialog({
         title: u.nome, size: 'lg',
         tabs: '<div class="tabs" role="tablist">' + tabs.map(([key, label], i) => '<button type="button" role="tab" data-tab="' + key + '" aria-selected="' + (i === 0) + '">' + E(label) + '</button>').join('') + '</div>',
         body:
           '<div data-panel="dados"><form id="person-form" class="form">' +
-            '<div class="identity"><span class="avatar avatar--lg" aria-hidden="true">' + E(U.initials(u.nome)) + '</span><div class="identity__text"><div class="badge-row">' + U.roleBadge(person.perfil) + U.statusBadge(u.ativo) + '</div><span>CPF ' + E(U.cpf(u.cpf)) + ' · Cadastro: ' + E(U.stamp(u.criado_em)) + ' · Última alteração: ' + E(U.stamp(u.atualizado_em)) + '</span></div></div>' +
-            '<div class="form-grid">' + field('nome', 'Nome completo', 'text', u.nome, 'required minlength="3" maxlength="150"', 'span-2') + field('email', 'E-mail', 'email', u.email, 'required maxlength="254"') + field('telefone', 'Telefone', 'tel', U.phone(u.telefone), 'required maxlength="16" inputmode="tel"') +
+            '<div class="identity"><span class="avatar avatar--lg" aria-hidden="true">' + E(U.initials(u.nome)) + '</span><div class="identity__text"><div class="badge-row">' + U.roleBadge(person.perfil) + U.statusBadge(u.ativo) + '</div><span>' + (u.tipo_pessoa === 'juridica' ? 'CNPJ ' : 'CPF ') + E(U.doc(u.cpf)) + ' · Cadastro: ' + E(U.stamp(u.criado_em)) + ' · Última alteração: ' + E(U.stamp(u.atualizado_em)) + '</span></div></div>' +
+            '<div class="form-grid">' + field('nome', 'Nome de usuário', 'text', u.nome, 'required minlength="3" maxlength="150"', 'span-2') + (company ? field('razao_social', 'Nome da empresa', 'text', u.razao_social || '', 'required minlength="3" maxlength="150"', 'span-2') : '') + field('email', 'E-mail', 'email', u.email, 'required maxlength="254"') + field('telefone', 'Telefone', 'tel', U.phone(u.telefone), 'required maxlength="16" inputmode="tel"') +
             (staff ? field('especialidade', 'Cargo / especialidade', 'text', u.especialidade, 'required minlength="3" maxlength="150"') + field('admissao', 'Admissão <small>(opcional)</small>', 'date', u.admissao || '') : '') +
             '<label class="field' + (staff ? ' span-2' : '') + '"><span>Situação da conta</span><select name="ativo"' + (self ? ' disabled' : '') + '><option value="1"' + (u.ativo ? ' selected' : '') + '>Ativa</option><option value="0"' + (u.ativo ? '' : ' selected') + '>Inativa — bloqueia o acesso</option></select>' + (self ? '<span class="field__hint">Você não pode desativar a própria conta.</span>' : '') + '</label></div>' +
             (staff ? '<fieldset class="perm-options"><legend>Permissões do funcionário</legend>' + PERMISSIONS.map(([key, label, hint]) => '<label class="perm-option"><span>' + label + '<small>' + hint + '</small></span><span class="switch"><input type="checkbox" name="permissoes" value="' + key + '"' + (granted.includes(key) ? ' checked' : '') + '><span class="switch__track"></span></span></label>').join('') + '</fieldset>' : '') +
@@ -236,7 +238,7 @@
       edit.onsubmit = async event => {
         event.preventDefault(); if (busy) return;
         const f = new FormData(edit), changes = {};
-        for (const key of ['nome', 'email', ...(staff ? ['especialidade'] : [])]) if (f.get(key).trim() !== u[key]) changes[key] = f.get(key).trim();
+        for (const key of ['nome', 'email', ...(staff ? ['especialidade'] : []), ...(company ? ['razao_social'] : [])]) if (f.get(key).trim() !== (u[key] || '')) changes[key] = f.get(key).trim();
         if (digits(f.get('telefone')) !== digits(u.telefone)) changes.telefone = f.get('telefone');
         if (!self && Number(f.get('ativo')) !== u.ativo) changes.ativo = Number(f.get('ativo'));
         if (staff) {
@@ -269,21 +271,39 @@
       const dialog = U.openDialog({
         title: 'Cadastrar pessoa',
         body: '<form id="create-form" class="form"><fieldset class="field"><span>Perfil da conta</span><div class="segmented">' + Object.entries(U.ROLES).map(([key, [label]]) => '<label><input class="sr-only" type="radio" name="perfil" value="' + key + '"' + (key === initial ? ' checked' : '') + '>' + label + '</label>').join('') + '</div></fieldset>' +
-          '<div class="form-grid">' + field('nome', 'Nome completo', 'text', '', 'required minlength="3" maxlength="150" autocomplete="off"', 'span-2') + field('email', 'E-mail', 'email', '', 'required maxlength="254" autocomplete="off"') + field('cpf', 'CPF', 'text', '', 'required maxlength="14" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off"') +
+          '<fieldset class="field" id="create-type"><span>Tipo de cadastro</span><div class="segmented">' + [['fisica', 'Pessoa física (CPF)'], ['juridica', 'Empresa (CNPJ)']].map(([key, label]) => '<label><input class="sr-only" type="radio" name="tipo_pessoa" value="' + key + '"' + (key === 'fisica' ? ' checked' : '') + '>' + label + '</label>').join('') + '</div></fieldset>' +
+          '<div class="form-grid">' + field('nome', 'Nome de usuário', 'text', '', 'required minlength="3" maxlength="150" autocomplete="off"', 'span-2') +
+          '<label class="field span-2" id="create-company"><span>Nome da empresa</span><input name="razao_social" minlength="3" maxlength="150" placeholder="Ex.: Reparos Silva Ltda."></label>' +
+          field('email', 'E-mail', 'email', '', 'required maxlength="254" autocomplete="off"') + '<label class="field"><span id="create-doc-label">CPF</span><input name="cpf" type="text" required maxlength="14" inputmode="numeric" placeholder="000.000.000-00" autocomplete="off" aria-labelledby="create-doc-label"></label>' +
           field('telefone', 'Telefone', 'tel', '', 'required maxlength="16" inputmode="tel" placeholder="(00) 00000-0000" autocomplete="off"') + '<label class="field" id="create-specialty"><span>Especialidade</span><input name="especialidade" maxlength="150" placeholder="Ex.: Eletricista"></label>' +
           '<label class="field span-2"><span>Senha inicial</span><input name="senha" type="password" required minlength="8" maxlength="128" autocomplete="new-password"><span class="field__hint">De 8 a 128 caracteres. Informe-a à pessoa por um canal seguro.</span></label></div>' +
           '<p class="form-message" id="create-message" role="alert"></p></form>',
         foot: '<button type="button" class="btn" data-dialog-close>Cancelar</button><button type="submit" form="create-form" class="btn btn--primary">Cadastrar</button>',
       });
       const create = $('#create-form'), message = $('#create-message');
-      const syncRole = () => { const staff = create.elements.perfil.value === 'funcionario', specialty = $('#create-specialty'); specialty.hidden = !staff; specialty.querySelector('input').disabled = !staff; specialty.querySelector('input').required = staff; };
-      create.querySelectorAll('[name="perfil"]').forEach(radio => { radio.onchange = syncRole; }); syncRole();
-      create.elements.cpf.oninput = event => { event.target.value = maskCpf(event.target.value); };
+      // Só profissionais podem ser empresa; o documento vira CNPJ e aparece o nome da empresa.
+      const isCompany = () => create.elements.perfil.value === 'funcionario' && create.elements.tipo_pessoa.value === 'juridica';
+      const toggle = (wrap, show) => { wrap.hidden = !show; const input = wrap.querySelector('input'); if (input) { input.disabled = !show; input.required = show; } };
+      const syncRole = () => {
+        const staff = create.elements.perfil.value === 'funcionario', company = isCompany(), doc = create.elements.cpf;
+        toggle($('#create-specialty'), staff);
+        $('#create-type').hidden = !staff;
+        toggle($('#create-company'), company);
+        $('#create-doc-label').textContent = company ? 'CNPJ' : 'CPF';
+        doc.placeholder = company ? '00.000.000/0000-00' : '000.000.000-00';
+        doc.maxLength = company ? 18 : 14;
+        if (doc.dataset.kind && doc.dataset.kind !== (company ? 'cnpj' : 'cpf')) doc.value = '';
+        doc.dataset.kind = company ? 'cnpj' : 'cpf';
+      };
+      create.querySelectorAll('[name="perfil"], [name="tipo_pessoa"]').forEach(radio => { radio.onchange = syncRole; }); syncRole();
+      create.elements.cpf.oninput = event => { event.target.value = isCompany() ? maskCnpj(event.target.value) : maskCpf(event.target.value); };
       create.elements.telefone.oninput = event => { event.target.value = maskPhone(event.target.value); };
       let busy = false;
       create.onsubmit = async event => {
         event.preventDefault(); if (busy) return;
         const data = Object.fromEntries(new FormData(create)), path = ({cliente: 'clientes', funcionario: 'funcionarios', admin: 'admins'})[data.perfil], label = U.ROLES[data.perfil][0];
+        if (data.perfil !== 'funcionario') delete data.tipo_pessoa;
+        else if (data.tipo_pessoa === 'juridica') { data.cnpj = data.cpf; delete data.cpf; }
         delete data.perfil;
         busy = true; U.lockDialog(true); message.textContent = ''; dialog.querySelectorAll('.dialog__foot button').forEach(b => { b.disabled = true; });
         try { await D.request('/api/' + path, send('POST', data)); U.lockDialog(false); U.closeDialog(); U.toast(label + ' cadastrado: ' + data.nome.trim() + '.'); await reload(); }

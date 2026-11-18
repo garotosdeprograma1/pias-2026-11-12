@@ -10,15 +10,15 @@
   --brand-deep: #203b30;
   --brand-mid: #2c4a3c;
   --brand-soft: #dce7de;
-  --accent: #b95d43;
+  --accent: #b65b42;
   --accent-hover: #9f4b34;
 
   --bg-paper: #f3f2ed;
   --surface: #ffffff;
   --surface-2: #f5f5f0;
   --text-main: #202a24;
-  --text-muted: #67736b;
-  --text-soft: #89938c;
+  --text-muted: #5f6b63;
+  --text-soft: #666f69;
   --border-light: #dfe3dc;
   --border-strong: #bcc6bd;
 
@@ -665,6 +665,62 @@ input:focus-visible {
 
 .staff-only {
   min-width: 0;
+}
+
+/* Profissional escolhe se o cadastro é de pessoa física (CPF) ou de empresa (CNPJ). */
+.person-type {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.person-type legend {
+  grid-column: 1 / -1;
+  float: left;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.person-type__opt { position: relative; display: block; min-width: 0; cursor: pointer; }
+.person-type__opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.person-type__box {
+  display: grid;
+  gap: 2px;
+  height: 100%;
+  padding: 11px 14px 11px 40px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 12px;
+  background: var(--surface);
+  position: relative;
+  transition: border-color .2s, background .2s;
+}
+.person-type__box::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+}
+.person-type__box strong { font-size: .88rem; color: var(--text-main); }
+.person-type__box small { font-size: .78rem; line-height: 1.4; color: var(--text-muted); }
+.person-type__opt:hover .person-type__box { border-color: var(--border-strong); }
+.person-type__opt input:checked + .person-type__box { border-color: var(--brand-deep); background: var(--brand-soft); }
+.person-type__opt input:checked + .person-type__box::before { border: 5px solid var(--brand-deep); }
+.person-type__opt input:focus-visible + .person-type__box { outline: 2px solid var(--accent); outline-offset: 2px; }
+[data-theme="dark"] .person-type__opt input:checked + .person-type__box { border-color: var(--brand-mid); background: rgba(255, 255, 255, .04); }
+[data-theme="dark"] .person-type__opt input:checked + .person-type__box::before { border-color: var(--accent); }
+@media (max-width: 380px) {
+  .person-type { grid-template-columns: minmax(0, 1fr); }
 }
 
 .field {
@@ -1627,3 +1683,7 @@ body.show-dev-shortcuts .dev-shortcut {
 
 /* Recorte circular remove os cantos pretos do arquivo original da marca. */
 img[src="/assets/images/logo.png"]{border:0;border-radius:50%;clip-path:circle(49% at 50% 50%);box-shadow:none;}
+
+/* Tamanho mínimo legível nos rótulos pequenos da tela de acesso. */
+.panel__eyebrow, .panel__footer-text, .admin-access > div > span { font-size: 11px; }
+.legal { font-size: .78rem; }

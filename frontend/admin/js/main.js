@@ -46,6 +46,11 @@
     const d = String(value || '').replace(/\D/g, '');
     return d.length === 11 ? d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6, 9) + '-' + d.slice(9) : (value || 'Não informado');
   };
+  // Documento do cadastro: CPF (11 dígitos) ou CNPJ (14 dígitos) de profissionais que são empresas.
+  const doc = value => {
+    const d = String(value || '').replace(/\D/g, '');
+    return d.length === 14 ? d.slice(0, 2) + '.' + d.slice(2, 5) + '.' + d.slice(5, 8) + '/' + d.slice(8, 12) + '-' + d.slice(12) : cpf(value);
+  };
   const validDate = value => { const date = new Date(value); return value && !Number.isNaN(date.getTime()) ? date : null; };
   const stamp = value => { const d = validDate(value); return d ? d.toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Não registrado'; };
   const day = value => { const d = validDate(value); return d ? d.toLocaleDateString('pt-BR') : 'Não registrado'; };
@@ -232,7 +237,7 @@
 
   window.DafixAdmin = {
     refreshMessageBadge,
-    ready, icon, initials, phone, cpf, stamp, day, month, plural, eventLabel, moduleLabel,
+    ready, icon, initials, phone, cpf, doc, stamp, day, month, plural, eventLabel, moduleLabel,
     badge, roleBadge, statusBadge, resultBadge, orderState, orderBadge, ORDER_STATUS, ROLES,
     identity, empty, failure, skeleton, table, pager, kpi, bars, activity, toast, applyTheme,
     openDialog, closeDialog, lockDialog: value => { dialogLocked = value; },

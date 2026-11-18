@@ -182,4 +182,20 @@ db.ready = db.ready.then(async () => {
   } catch(error) { await exec('ROLLBACK'); throw error; }
 });
 
+// Profissionais podem se cadastrar como pessoa física (CPF) ou empresa (CNPJ).
+// O documento continua na coluna cpf (11 ou 14 dígitos); tipo_pessoa diz qual é.
+db.ready = db.ready.then(async () => {
+  const exec = sql => new Promise((resolve,reject)=>db.exec(sql,e=>e?reject(e):resolve()));
+  const all = (sql,args=[]) => new Promise((resolve,reject)=>db.all(sql,args,(e,r)=>e?reject(e):resolve(r)));
+  await exec('BEGIN IMMEDIATE');
+  try {
+    if (!(await all("SELECT nome FROM schema_migracoes WHERE nome='funcionario_pj_v1'")).length) {
+      await exec(`ALTER TABLE funcionario ADD COLUMN tipo_pessoa TEXT NOT NULL DEFAULT 'fisica' CHECK(tipo_pessoa IN ('fisica','juridica'));
+      ALTER TABLE funcionario ADD COLUMN razao_social TEXT;
+      INSERT INTO schema_migracoes(nome) VALUES('funcionario_pj_v1');`);
+    }
+    await exec('COMMIT');
+  } catch(error) { await exec('ROLLBACK'); throw error; }
+});
+
 module.exports = db;
