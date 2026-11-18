@@ -46,6 +46,17 @@
         "field.cpf.ph": "000.000.000-00",
         "field.spec.label": "Especialidade",
         "field.spec.ph": "Ex.: Suporte técnico",
+        "field.cnpj.label": "CNPJ",
+        "field.cnpj.ph": "00.000.000/0000-00",
+        "field.company.label": "Nome da empresa",
+        "field.company.ph": "Ex.: Reparos Silva Ltda.",
+        "type.legend": "Tipo de cadastro",
+        "type.pf": "Pessoa física",
+        "type.pf.sub": "Profissional autônomo, com CPF",
+        "type.pj": "Empresa",
+        "type.pj.sub": "Prestadora de serviços, com CNPJ",
+        "v.cnpj": "CNPJ inválido. Confira os 14 dígitos.",
+        "v.company": "Informe o nome da empresa (mínimo de 3 caracteres).",
         "field.area.label": "Área de atuação",
         "field.area.ph": "Ex.: Atendimento",
         "field.confirm.label": "Confirmar senha",
@@ -130,6 +141,17 @@
         "field.cpf.ph": "000.000.000-00",
         "field.spec.label": "Specialty",
         "field.spec.ph": "e.g. Technical support",
+        "field.cnpj.label": "CNPJ (company ID)",
+        "field.cnpj.ph": "00.000.000/0000-00",
+        "field.company.label": "Company name",
+        "field.company.ph": "e.g. Silva Repairs Ltd.",
+        "type.legend": "Registration type",
+        "type.pf": "Individual",
+        "type.pf.sub": "Self-employed professional, with CPF",
+        "type.pj": "Company",
+        "type.pj.sub": "Service company, with CNPJ",
+        "v.cnpj": "Invalid CNPJ. Check the 14 digits.",
+        "v.company": "Enter the company name (at least 3 characters).",
         "field.area.label": "Area of work",
         "field.area.ph": "e.g. Customer service",
         "field.confirm.label": "Confirm password",
@@ -186,6 +208,7 @@
       theme: ["light", "dark"].includes(localStorage.getItem("dafix_theme")) ? localStorage.getItem("dafix_theme") : "light",
       tab: "login",       // login | signup
       profile: "cliente", // cliente | funcionario
+      personType: "fisica", // fisica (CPF) | juridica (CNPJ), só para profissionais
     };
 
     let DATA = null;
@@ -296,7 +319,38 @@
       // Toggle staff-only fields
       const staffWrap = $("[data-staff]");
       staffWrap.hidden = profile !== "funcionario";
+      // Só profissionais escolhem entre pessoa física e empresa; clientes usam sempre CPF.
+      $("[data-staff-type]").hidden = profile !== "funcionario";
+      if (profile !== "funcionario") setPersonType("fisica");
       refreshDynamicTexts();
+    }
+
+    /* ----------------- Pessoa física (CPF) ou empresa (CNPJ) ----------------- */
+    function setPersonType(type) {
+      state.personType = type === "juridica" ? "juridica" : "fisica";
+      const company = state.personType === "juridica";
+      const radio = $(`[name="tipo_pessoa"][value="${state.personType}"]`);
+      if (radio) radio.checked = true;
+      const doc = $("#su-cpf"), label = $('label[for="su-cpf"]');
+      const prefix = company ? "field.cnpj" : "field.cpf";
+      label.setAttribute("data-i18n", prefix + ".label");
+      label.textContent = t(prefix + ".label");
+      doc.setAttribute("data-i18n-ph", prefix + ".ph");
+      doc.placeholder = t(prefix + ".ph");
+      doc.dataset.validate = company ? "cnpj" : "cpf";
+      doc.dataset.mask = company ? "cnpj" : "cpf";
+      doc.maxLength = company ? 18 : 14;
+      // O documento digitado não vale para o outro tipo: limpa ao trocar.
+      if (doc.dataset.lastType && doc.dataset.lastType !== state.personType) {
+        doc.value = "";
+        delete doc.dataset.touched;
+        doc.closest(".field").classList.remove("is-valid", "is-invalid");
+        const hint = doc.closest(".field").querySelector("[data-hint]"); if (hint) hint.textContent = "";
+      }
+      doc.dataset.lastType = state.personType;
+      const companyField = $("[data-company]");
+      companyField.hidden = !company;
+      if (!company) companyField.classList.remove("is-valid", "is-invalid");
     }
 
     /* ----------------- Masks ----------------- */
@@ -314,6 +368,14 @@
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
+    function maskCNPJ(v) {
+      v = v.replace(/\D/g, "").slice(0, 14);
+      return v
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1/$2")
+        .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+    }
 
     /* ----------------- Validators ----------------- */
     const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -328,6 +390,18 @@
       for (let i = 0; i < 10; i++) sum += parseInt(cpf[i]) * (11 - i);
       let d2 = (sum * 10) % 11; if (d2 === 10) d2 = 0;
       return d2 === parseInt(cpf[10]);
+    }
+    // Mesma regra do servidor: 14 dígitos com os dois verificadores.
+    function validCNPJ(cnpj) {
+      cnpj = (cnpj || "").replace(/\D/g, "");
+      if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
+      const digit = (length) => {
+        let sum = 0, weight = length - 7;
+        for (let i = 0; i < length; i++) { sum += Number(cnpj[i]) * weight--; if (weight < 2) weight = 9; }
+        const rest = sum % 11;
+        return rest < 2 ? 0 : 11 - rest;
+      };
+      return digit(12) === Number(cnpj[12]) && digit(13) === Number(cnpj[13]);
     }
     function validPhone(v) {
       const d = (v || "").replace(/\D/g, "");
@@ -354,6 +428,12 @@
         case "cpf":
           if (!val) return { ok: false, msg: t("v.required") };
           return validCPF(val) ? { ok: true } : { ok: false, msg: t("v.cpf") };
+        case "cnpj":
+          if (!val) return { ok: false, msg: t("v.required") };
+          return validCNPJ(val) ? { ok: true } : { ok: false, msg: t("v.cnpj") };
+        case "company":
+          if (state.personType !== "juridica") return { ok: true };
+          return val.length >= 3 ? { ok: true } : { ok: false, msg: t("v.company") };
         case "login-password":
           return input.value ? { ok: true } : { ok: false, msg: t("v.required") };
         case "password":
@@ -474,8 +554,8 @@
       let ok = true;
       let firstInvalid = null;
       $$("[data-validate]", form).forEach((input) => {
-        // Skip hidden staff fields
-        if (input.closest("[data-staff]") && input.closest("[data-staff]").hidden) {
+        // Campos escondidos (só de profissionais ou só de empresas) não são validados.
+        if (input.closest("[hidden]")) {
           input.closest(".field").classList.remove("is-valid", "is-invalid");
           return;
         }
@@ -560,12 +640,15 @@ async function handleLogin() {
         nome: $("#su-name").value.trim(),
         email,
         telefone: $("#su-phone").value.trim(),
-        cpf: $("#su-cpf").value.trim(),
         senha: $("#su-password").value,
       };
+      const company = group === "funcionarios" && state.personType === "juridica";
+      if (company) user.cnpj = $("#su-cpf").value.trim();
+      else user.cpf = $("#su-cpf").value.trim();
       if (group === "funcionarios") {
         user.especialidade = $("#su-spec").value.trim();
-
+        user.tipo_pessoa = company ? "juridica" : "fisica";
+        if (company) user.razao_social = $("#su-company").value.trim();
       }
       btn.classList.add("is-loading");
       btn.disabled = true;
@@ -576,6 +659,7 @@ async function handleLogin() {
         $$(".field", form).forEach((f) => f.classList.remove("is-valid", "is-invalid"));
         $("[data-strength]", form).hidden = true;
         $("#terms").closest(".check").classList.remove("is-invalid");
+        setPersonType("fisica");
         setProfile(perfil);
         setTab("login");
         $("#login-email").value = email;
@@ -622,6 +706,9 @@ async function handleLogin() {
 
     /* ----------------- Wire up events ----------------- */
     function bind() {
+      // Pessoa física ou empresa
+      $$('[name="tipo_pessoa"]').forEach((radio) => radio.addEventListener("change", () => setPersonType(radio.value)));
+
       // Theme & language
       $("#themeToggle").addEventListener("click", () => {
         state.theme = state.theme === "dark" ? "light" : "dark";
@@ -660,6 +747,7 @@ async function handleLogin() {
         input.addEventListener("input", () => {
           if (input.dataset.mask === "phone") input.value = maskPhone(input.value);
           if (input.dataset.mask === "cpf") input.value = maskCPF(input.value);
+          if (input.dataset.mask === "cnpj") input.value = maskCNPJ(input.value);
           if (input.id === "su-password") updateStrength(input);
           // live validate only after first blur (tracked by data-touched)
           if (input.dataset.touched) paintField(input, validateField(input));

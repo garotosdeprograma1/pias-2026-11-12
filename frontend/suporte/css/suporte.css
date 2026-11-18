@@ -490,6 +490,8 @@ ul,ol { list-style: none; }
   }
   .header__nav::-webkit-scrollbar { display: none; }
   .header__nav a { white-space: nowrap; flex-shrink: 0; }
+  /* Com quatro seções, os links quebram em duas linhas em vez de ficarem escondidos na borda. */
+  .header__nav { flex-wrap: wrap; overflow: visible; gap: 4px; }
   .hero { padding: 52px 18px 60px; }
   .hero h1 { font-size: 28px; }
   .contact-grid { grid-template-columns: 1fr; }

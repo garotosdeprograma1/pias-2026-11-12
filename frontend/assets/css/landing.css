@@ -533,3 +533,7 @@ ul,ol{list-style:none}
 
 /* Recorte circular remove os cantos pretos do arquivo original da marca. */
 img[src="/assets/images/logo.png"]{border:0;border-radius:50%;clip-path:circle(49% at 50% 50%);box-shadow:none;}
+
+/* Tamanho mínimo legível nos rótulos pequenos. */
+.app-pro-eta{font-size:11px}
+@media(max-width:768px){.home-board__heading{font-size:11px}}
