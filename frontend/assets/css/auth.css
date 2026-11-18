@@ -917,6 +917,29 @@ input:focus-visible {
   margin-top: 1px;
 }
 
+/* Links do aceite: sublinhados para se distinguirem do texto do rótulo. */
+.check__link {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.check__link:hover { color: var(--accent); }
+
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-top: 12px;
+  font-size: .78rem;
+}
+.legal-links a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal-links a:hover { color: var(--text-main); }
+
 .check.is-invalid {
   color: var(--red);
 }

@@ -39,7 +39,7 @@ frontend/
   cliente/                 Área do cliente, css/ e js/
   funcionario/             Área do funcionário, css/ e js/
   publico/                 Páginas públicas, css/ e js/
-  suporte/                 Central de ajuda, css/ e js/
+  suporte/                 Central de ajuda, Contato, Termos de Uso e Política de Privacidade
 tests/
   account-session.test.js   Sessão, dados por conta e logout
   registered-data.test.js   Cadastro, consultas e pedidos por conta
@@ -73,6 +73,17 @@ node --test tests/*.test.js
 ```
 
 Os testes usam as ferramentas nativas do Node.js. O teste da API cria um banco temporário e o remove ao terminar; não altera `backend/banco.db`. Os dados presentes nesses arquivos são exclusivos dos testes.
+
+## Termos de Uso e Política de Privacidade
+
+`frontend/suporte/termos.html` e `frontend/suporte/privacidade.html` descrevem o que a
+plataforma faz hoje: dados coletados, o que fica só no navegador, o cookie de sessão, o
+uso do Google Fonts, quem vê cada dado e por quanto tempo é guardado. Ao mudar esses
+comportamentos, atualize os textos e a data de "Última atualização".
+
+Antes de publicar para usuários reais, complete a identificação da empresa (razão social,
+CNPJ e contato do encarregado de dados, exigidos pela LGPD) e um canal de atendimento na
+página de Contato, e peça a revisão de um profissional de direito.
 
 ## Catálogo e solicitações
 

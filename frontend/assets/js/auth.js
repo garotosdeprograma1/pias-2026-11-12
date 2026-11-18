@@ -38,8 +38,8 @@
         "field.email.ph": "voce@exemplo.com",
         "field.emailCorp.ph": "voce@empresa.com",
         "field.password.label": "Senha",
-        "field.name.label": "Nome completo",
-        "field.name.ph": "Seu nome completo",
+        "field.name.label": "Nome de usuário",
+        "field.name.ph": "Ex.: ana.souza",
         "field.phone.label": "Telefone",
         "field.phone.ph": "(11) 99999-9999",
         "field.cpf.label": "CPF",
@@ -52,7 +52,13 @@
         "login.remember": "Lembrar acesso",
         "login.forgot": "Esqueci minha senha",
         "login.submit": "Entrar",
-        "signup.terms": "Concordo com os Termos de Uso e a Política de Privacidade",
+        "signup.terms": "Concordo com os",
+        "signup.termsLink": "Termos de Uso",
+        "signup.and": "e a",
+        "signup.privacyLink": "Política de Privacidade",
+        "legal.help": "Central de ajuda",
+        "legal.terms": "Termos",
+        "legal.privacy": "Privacidade",
         "signup.submit": "Criar conta",
         "legal.text": "Acesse a Dafix com o perfil adequado para você.",
         "modal.title": "Recuperação de senha",
@@ -74,7 +80,7 @@
         "strength.strong": "Senha forte",
         "v.required": "Este campo é obrigatório.",
         "v.email": "Informe um e-mail válido.",
-        "v.name": "Informe nome e sobrenome.",
+        "v.name": "Use de 3 a 30 letras, números, ponto, hífen ou sublinhado, sem espaços.",
         "v.phone": "Telefone inválido. Use DDD + número.",
         "v.cpf": "CPF inválido.",
         "v.password": "Mínimo de 8 caracteres.",
@@ -116,8 +122,8 @@
         "field.email.ph": "you@example.com",
         "field.emailCorp.ph": "you@company.com",
         "field.password.label": "Password",
-        "field.name.label": "Full name",
-        "field.name.ph": "Your full name",
+        "field.name.label": "Username",
+        "field.name.ph": "e.g. ana.souza",
         "field.phone.label": "Phone",
         "field.phone.ph": "(11) 99999-9999",
         "field.cpf.label": "CPF",
@@ -130,7 +136,13 @@
         "login.remember": "Remember me",
         "login.forgot": "Forgot password?",
         "login.submit": "Sign in",
-        "signup.terms": "I agree to the Terms of Use and Privacy Policy",
+        "signup.terms": "I agree to the",
+        "signup.termsLink": "Terms of Use",
+        "signup.and": "and the",
+        "signup.privacyLink": "Privacy Policy",
+        "legal.help": "Help center",
+        "legal.terms": "Terms",
+        "legal.privacy": "Privacy",
         "signup.submit": "Create account",
         "legal.text": "Choose the profile that matches your access.",
         "modal.title": "Password recovery",
@@ -152,7 +164,7 @@
         "strength.strong": "Strong password",
         "v.required": "This field is required.",
         "v.email": "Enter a valid email.",
-        "v.name": "Enter first and last name.",
+        "v.name": "Use 3 to 30 letters, numbers, dots, hyphens or underscores, with no spaces.",
         "v.phone": "Invalid phone. Use area code + number.",
         "v.cpf": "Invalid CPF.",
         "v.password": "Minimum of 8 characters.",
@@ -334,7 +346,8 @@
           return reEmail.test(val) ? { ok: true } : { ok: false, msg: t("v.email") };
         case "name":
           if (!val) return { ok: false, msg: t("v.required") };
-          return val.split(/\s+/).length >= 2 && val.length >= 3 ? { ok: true } : { ok: false, msg: t("v.name") };
+          // Nome de usuário: sem espaços, com letras (inclusive acentuadas), números, ponto, hífen ou sublinhado.
+          return /^[\p{L}\p{N}._-]{3,30}$/u.test(val) ? { ok: true } : { ok: false, msg: t("v.name") };
         case "phone":
           if (!val) return { ok: false, msg: t("v.required") };
           return validPhone(val) ? { ok: true } : { ok: false, msg: t("v.phone") };

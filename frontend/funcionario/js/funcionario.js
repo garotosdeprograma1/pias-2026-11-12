@@ -431,10 +431,10 @@
             window.location.href = "../suporte/index.html";
             break;
           case "open-terms":
-            showToast({ title: "Termos de uso", message: "Abra em uma nova janela para ler na íntegra.", type: "info" });
+            window.location.href = "../suporte/termos.html";
             break;
           case "open-privacy":
-            showToast({ title: "Política de privacidade", message: "Sua privacidade é nossa prioridade.", type: "info" });
+            window.location.href = "../suporte/privacidade.html";
             break;
           case "mark-all-read":
             $$(".notif-item--new").forEach((it) => it.classList.remove("notif-item--new"));
