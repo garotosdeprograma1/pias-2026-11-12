@@ -6,7 +6,8 @@ var auth = require('./auth');
 
 var PORTA = Number(process.env.PORT) || 5000;
 var HOST = process.env.PORT ? '0.0.0.0' : 'localhost';
-const loginAttempts=new Map();
+const loginAttempts=new Map(),contactAttempts=new Map();
+const CONTACT_SUBJECTS=['conta','pedidos','pagamentos','tecnico','privacidade','outro'],CONTACT_STATUS=['nova','em_andamento','respondida','arquivada'];
 
 // ---------------------------------------------------------------
 // Auxiliares
@@ -296,8 +297,59 @@ var servidor = http.createServer(async function (req, res) {
         const rows=await sqlAll('SELECT * FROM auditoria'+clause+' ORDER BY id DESC LIMIT 25 OFFSET ?',[...args,(page-1)*25]);
         return responderJson(res,200,{registros:rows,total:count.total,pagina:page});
       }
+      if(req.method==='GET' && caminho==='/api/admin/contatos') {
+        const where=[],args=[];
+        if(params.get('status')){if(!CONTACT_STATUS.includes(params.get('status')))return responderJson(res,400,{erro:'Status inválido.'});where.push('status=?');args.push(params.get('status'));}
+        if(params.get('assunto')){if(!CONTACT_SUBJECTS.includes(params.get('assunto')))return responderJson(res,400,{erro:'Assunto inválido.'});where.push('assunto=?');args.push(params.get('assunto'));}
+        if(params.get('busca')){const q='%'+params.get('busca').slice(0,150).replace(/[\\%_]/g,'\\$&')+'%';where.push("(nome LIKE ? ESCAPE '\\' OR email LIKE ? ESCAPE '\\' OR mensagem LIKE ? ESCAPE '\\')");args.push(q,q,q);}
+        const clause=where.length?' WHERE '+where.join(' AND '):'';
+        const page=Math.max(1,Math.min(1000000,Math.floor(Number(params.get('pagina')))||1));
+        const [count]=await sqlAll('SELECT COUNT(*) total FROM contato_mensagem'+clause,args);
+        const rows=await sqlAll('SELECT * FROM contato_mensagem'+clause+' ORDER BY id DESC LIMIT 20 OFFSET ?',[...args,(page-1)*20]);
+        const totals=Object.fromEntries(CONTACT_STATUS.map(k=>[k,0]));
+        for(const r of await sqlAll('SELECT status,COUNT(*) total FROM contato_mensagem GROUP BY status'))totals[r.status]=r.total;
+        return responderJson(res,200,{registros:rows,total:count.total,pagina:page,por_status:totals});
+      }
+      const contact=caminho.match(/^\/api\/admin\/contatos\/(\d+)$/);
+      if(contact && req.method==='PATCH') {
+        const body=await jsonBody(req);
+        if(Object.keys(body).some(k=>k!=='status') || !CONTACT_STATUS.includes(body.status))return responderJson(res,400,{erro:'Escolha um status válido.'});
+        const result=await sqlRun("UPDATE contato_mensagem SET status=?,atualizado_em=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?",[body.status,Number(contact[1])]);
+        if(!result.changes)return responderJson(res,404,{erro:'Mensagem não encontrada.'});
+        res.audit.action='contato.status_alterado';
+        return responderJson(res,200,{id:Number(contact[1]),status:body.status});
+      }
       return responderJson(res,404,{erro:'Operação não encontrada.'});
     } catch(error) {return responderJson(res,error.code==='SQLITE_CONSTRAINT'?409:error.code?500:400,{erro:error.code==='SQLITE_CONSTRAINT'?'E-mail já cadastrado neste perfil.':error.code?'Não foi possível concluir a operação.':error instanceof SyntaxError?'Dados JSON inválidos.':error.message});}
+  }
+
+  // Página de Contato: qualquer visitante pode enviar; a mensagem fica para a administração.
+  if (caminho === '/api/contato' && req.method === 'POST') {
+    const ip=req.socket.remoteAddress,now=Date.now();
+    for(const [key,item] of contactAttempts)if(item.until<now)contactAttempts.delete(key);
+    const attempt=contactAttempts.get(ip)||{count:0,until:now+15*60*1000};
+    if(attempt.count>=5)return responderJson(res,429,{erro:'Você enviou várias mensagens em pouco tempo. Aguarde alguns minutos e tente novamente.'});
+    try {
+      const data=await jsonBody(req);
+      const allowed=['nome','email','perfil','assunto','pedido','mensagem','site'];
+      if(Object.keys(data).some(k=>!allowed.includes(k)))return responderJson(res,400,{erro:'Dados inválidos.'});
+      // Campo invisível para pessoas: quando preenchido, o envio veio de um robô.
+      if(data.site)return responderJson(res,400,{erro:'Dados inválidos.'});
+      const text=(value,min,max)=>typeof value==='string' && value.trim().length>=min && value.trim().length<=max;
+      if(!text(data.nome,2,100))return responderJson(res,400,{erro:'Informe seu nome (de 2 a 100 caracteres).'});
+      if(!text(data.email,3,254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim()))return responderJson(res,400,{erro:'Informe um e-mail válido para receber a resposta.'});
+      if(!CONTACT_SUBJECTS.includes(data.assunto))return responderJson(res,400,{erro:'Escolha o assunto da mensagem.'});
+      if(!text(data.mensagem,20,2000))return responderJson(res,400,{erro:'Escreva a mensagem com 20 a 2000 caracteres.'});
+      if(data.pedido!==undefined && data.pedido!==null && (!Number.isSafeInteger(data.pedido) || data.pedido<1))return responderJson(res,400,{erro:'Número de pedido inválido.'});
+      // Quem está conectado tem o perfil confirmado pela sessão.
+      const perfil=session && ['cliente','funcionario'].includes(session.perfil)?session.perfil:(['cliente','funcionario','visitante'].includes(data.perfil)?data.perfil:'visitante');
+      const result=await sqlRun('INSERT INTO contato_mensagem (nome,email,perfil,assunto,pedido,mensagem,conta_tipo,conta_id) VALUES (?,?,?,?,?,?,?,?)',
+        [data.nome.trim(),data.email.trim().toLowerCase(),perfil,data.assunto,data.pedido || null,data.mensagem.trim(),session?.perfil || null,session?.usuario.id || null]);
+      // Só mensagens aceitas contam para o limite: um envio recusado não grava nada.
+      attempt.count++;contactAttempts.set(ip,attempt);
+      res.audit.action='contato.enviado';
+      return responderJson(res,201,{id:result.id,protocolo:'DFX-'+String(result.id).padStart(6,'0')});
+    } catch(error) {return responderJson(res,error.code?500:400,{erro:error.code?'Não foi possível enviar a mensagem. Tente novamente.':'Dados inválidos ou muito longos.'});}
   }
 
   // Informações públicas sem dados de contato ou documentos dos usuários.

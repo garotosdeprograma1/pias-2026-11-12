@@ -154,4 +154,32 @@ db.ready = db.ready.then(async () => {
   } catch(error) { await exec('ROLLBACK'); throw error; }
 });
 
+// Mensagens da página de Contato, lidas pela administração.
+db.ready = db.ready.then(async () => {
+  const exec = sql => new Promise((resolve,reject)=>db.exec(sql,e=>e?reject(e):resolve()));
+  const all = (sql,args=[]) => new Promise((resolve,reject)=>db.all(sql,args,(e,r)=>e?reject(e):resolve(r)));
+  await exec('BEGIN IMMEDIATE');
+  try {
+    if (!(await all("SELECT nome FROM schema_migracoes WHERE nome='contato_v1'")).length) {
+      await exec(`CREATE TABLE contato_mensagem (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        email TEXT NOT NULL,
+        perfil TEXT NOT NULL CHECK(perfil IN ('cliente','funcionario','visitante')),
+        assunto TEXT NOT NULL CHECK(assunto IN ('conta','pedidos','pagamentos','tecnico','privacidade','outro')),
+        pedido INTEGER,
+        mensagem TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'nova' CHECK(status IN ('nova','em_andamento','respondida','arquivada')),
+        conta_tipo TEXT,
+        conta_id INTEGER,
+        criado_em TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+        atualizado_em TEXT
+      );
+      CREATE INDEX contato_status ON contato_mensagem(status, id);
+      INSERT INTO schema_migracoes(nome) VALUES('contato_v1');`);
+    }
+    await exec('COMMIT');
+  } catch(error) { await exec('ROLLBACK'); throw error; }
+});
+
 module.exports = db;

@@ -9,7 +9,7 @@
   --brand-500: #2c4a3c;
   --brand-700: #15251d;
   --brand-50:  #dce7de;
-  --orange-500: #b95d43;
+  --orange-500: #b65b42;
   --orange-400: #d17b5e;
   --orange-50:  #f5e8e3;
   --green-500: #2f704b;
@@ -18,7 +18,7 @@
   --red-50:    #fbefed;
   --amber-500: #9a753b;
   --amber-50:  #f5eddf;
-  --violet-500: #b95d43;
+  --violet-500: #b65b42;
   --violet-50:  #eee8df;
   --teal-500:  #536e5c;
   --teal-50:   #e8eee9;
@@ -632,3 +632,61 @@ img[src="/assets/images/logo.png"]{border:0;border-radius:50%;clip-path:circle(4
   .legal-layout { display: block; }
   .legal-doc { border: 0; box-shadow: none; padding: 0; max-width: none; }
 }
+
+/* ============================================================
+   Página de Contato
+   ============================================================ */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.contact-head { max-width: 720px; padding: 48px 0 32px; }
+.contact-head h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 4.4vw, 46px); line-height: 1.12; letter-spacing: -.025em; color: var(--text); margin: 10px 0 12px; }
+.contact-head p:last-child { font-size: 16px; line-height: 1.6; color: var(--text); max-width: 62ch; }
+.form-card > form > p:first-of-type { font-size: 13.5px; color: var(--text-2); margin-bottom: 22px; }
+.form-card h2 { margin-bottom: 6px; }
+.contact-signed { margin: -8px 0 20px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--brand-50); color: var(--text); font-size: 13.5px; line-height: 1.5; }
+.field label small { font-weight: 500; color: var(--text-2); }
+.field__hint { font-size: 12.5px; color: var(--text-2); }
+.field input[disabled], .field select[disabled] { background: var(--surface-2); color: var(--text-2); cursor: not-allowed; }
+.contact-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.contact-privacy { font-size: 13px; line-height: 1.55; color: var(--text-2); margin: 4px 0 6px; }
+.contact-privacy a, .info-card a { color: var(--brand-600); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.contact-error { font-size: 13.5px; font-weight: 600; color: var(--red-500); padding: 10px 12px; border-radius: var(--radius-sm); background: var(--red-50); margin-top: 8px; }
+.contact-error:empty { display: none; }
+.form-submit:disabled { opacity: .7; cursor: progress; }
+.success-state:focus { outline: none; }
+.contact-success__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+.contact-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border-radius: 12px; border: 1.5px solid transparent; background: var(--brand-600); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+[data-theme="dark"] .contact-btn { color: #111612; }
+.contact-btn:hover { background: var(--brand-700); }
+.contact-btn--ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+[data-theme="dark"] .contact-btn--ghost { color: var(--text); }
+.contact-btn--ghost:hover { background: var(--bg); border-color: var(--border-strong); }
+.info-card__lead { font-size: 13.5px; color: var(--text-2); margin: -6px 0 10px; line-height: 1.5; }
+.contact-links { display: grid; gap: 4px; }
+.contact-links a { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 8px; text-decoration: none; font-size: 13.5px; }
+.contact-links a::after { content: "→"; color: var(--text-2); }
+.contact-links a:hover { background: var(--bg); }
+.contact-steps { display: grid; gap: 10px; counter-reset: step; }
+.contact-steps li { display: grid; grid-template-columns: 24px 1fr; gap: 10px; font-size: 13.5px; line-height: 1.5; color: var(--text-2); counter-increment: step; }
+.contact-steps li::before { content: counter(step); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--brand-50); color: var(--brand-600); font-size: 12px; font-weight: 700; }
+.contact-steps strong, .info-list li { color: var(--text); }
+@media (max-width: 768px) { .contact-head { padding: 32px 0 20px; } }
+
+/* ============================================================
+   Central de ajuda: acessos rápidos e chamada para o contato
+   ============================================================ */
+.faq-item__heading { font: inherit; margin: 0; }
+.quick-access { max-width: 800px; margin: 0 auto 24px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.quick-access h3 { font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.quick-access__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.quick-access__link { display: grid; gap: 2px; height: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); transition: border-color .2s, background .2s; }
+.quick-access__link:hover { border-color: var(--brand-500); background: var(--brand-50); }
+.quick-access__link strong { font-size: 14px; color: var(--text); }
+.quick-access__link span { font-size: 12.5px; color: var(--text-2); }
+.faq-cta { max-width: 800px; margin: 24px auto 0; display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; padding: 18px 20px; border-radius: var(--radius-lg); background: var(--brand-50); }
+.faq-cta p { font-size: 14.5px; font-weight: 600; color: var(--text); }
+.faq-cta__link { display: inline-flex; align-items: center; min-height: 42px; padding: 9px 18px; border-radius: 12px; background: var(--brand-600); color: #fff; font-size: 14px; font-weight: 700; }
+[data-theme="dark"] .faq-cta__link { color: #111612; }
+.faq-cta__link:hover { background: var(--brand-700); }
+.contact-grid--single { grid-template-columns: minmax(0, 520px); justify-content: center; }
+@media (max-width: 768px) { .quick-access__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .quick-access__grid { grid-template-columns: minmax(0, 1fr); } }

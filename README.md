@@ -39,13 +39,14 @@ frontend/
   cliente/                 Área do cliente, css/ e js/
   funcionario/             Área do funcionário, css/ e js/
   publico/                 Páginas públicas, css/ e js/
-  suporte/                 Central de ajuda, Contato, Termos de Uso e Política de Privacidade
+  suporte/                 Central de ajuda, Contato (formulário), Termos e Privacidade
 tests/
   account-session.test.js   Sessão, dados por conta e logout
   registered-data.test.js   Cadastro, consultas e pedidos por conta
   db-migration.test.js      Migração de bancos antigos
   service-lifecycle.test.js Conclusão, avaliação e pagamentos demonstrativos
   admin-management.test.js  Catálogo, contas de administrador e auditoria
+  contact.test.js           Formulário de contato, limites e mensagens no painel
 ```
 
 Os arquivos específicos de cada área ficam junto das suas páginas, separados em `css/` e `js/`. Recursos usados por várias áreas ficam em `frontend/assets/`. Os endereços das páginas HTML foram preservados.
@@ -73,6 +74,24 @@ node --test tests/*.test.js
 ```
 
 Os testes usam as ferramentas nativas do Node.js. O teste da API cria um banco temporário e o remove ao terminar; não altera `backend/banco.db`. Os dados presentes nesses arquivos são exclusivos dos testes.
+
+## Contato e Central de ajuda
+
+A página **Contato** (`/suporte/contato.html`) envia a mensagem para `POST /api/contato`,
+que a grava na tabela `contato_mensagem` e devolve um protocolo (`DFX-000123`). Quem está
+conectado como cliente ou profissional tem o perfil confirmado pela sessão. Cada endereço IP
+pode enviar até 5 mensagens a cada 15 minutos; um campo invisível descarta envios de robôs.
+
+A equipe lê as mensagens em **Administração → Mensagens de contato**, com filtros por
+situação, assunto e texto. **Responder por e-mail** abre o programa de e-mail com o
+protocolo no assunto; o sistema não envia e-mails sozinho. O menu mostra quantas
+mensagens novas existem. Envios e mudanças de situação entram na auditoria.
+
+As perguntas frequentes da Central de ajuda e da landing são as mesmas respostas, escritas
+para o comportamento atual da plataforma. Ao mudar uma regra (prazo da sessão, limites,
+pagamentos), revise as duas listas. `index.html?cat=pagamentos` abre a Central já filtrada;
+`/cliente/index.html#orders`, `#payments`, `#services` e `#profile` abrem a seção da área
+do cliente.
 
 ## Termos de Uso e Política de Privacidade
 

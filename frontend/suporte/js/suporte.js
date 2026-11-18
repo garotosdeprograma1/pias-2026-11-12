@@ -60,16 +60,20 @@
           if (other === item) return;
           other.classList.remove("is-open");
           const ob = other.querySelector(".faq-item__body");
-          if (ob) ob.style.maxHeight = null;
+          if (ob) { ob.style.maxHeight = null; ob.inert = true; }
+          other.querySelector(".faq-item__trigger")?.setAttribute("aria-expanded", "false");
         });
 
         if (isOpen) {
           item.classList.remove("is-open");
           body.style.maxHeight = null;
+          body.inert = true;
         } else {
           item.classList.add("is-open");
+          body.inert = false;
           body.style.maxHeight = (inner ? inner.scrollHeight + 40 : body.scrollHeight) + "px";
         }
+        btn.setAttribute("aria-expanded", String(!isOpen));
       });
     });
   }
@@ -143,19 +147,36 @@
         });
 
         if (empty) empty.classList.toggle("is-visible", visible === 0);
+        syncCategoryExtras(cat);
 
         // fechar accordions abertos de outros grupos
         $$(".faq-item.is-open").forEach((it) => {
           if (!it.dataset.cat || (cat !== "all" && it.dataset.cat !== cat)) {
             it.classList.remove("is-open");
             const b = it.querySelector(".faq-item__body");
-            if (b) b.style.maxHeight = null;
+            if (b) { b.style.maxHeight = null; b.inert = true; }
+            it.querySelector(".faq-item__trigger")?.setAttribute("aria-expanded", "false");
           }
         });
       });
     });
   }
 
-  /* ====== FORMULÁRIO DE CONTATO ====== */
-  ready(() => { initTheme(); initFaq(); initSearch(); initChips(); });
+  /* ====== EXTRAS POR CATEGORIA ====== */
+  const SUBJECT = { conta: "conta", pedidos: "pedidos", pagamentos: "pagamentos", tecnico: "tecnico" };
+  function syncCategoryExtras(cat) {
+    $$(".filter-chip").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.cat === cat)));
+    const quick = $("#quickAccess");
+    if (quick) quick.hidden = quick.dataset.for !== cat;
+    const contact = $("#faqContact");
+    if (contact) contact.href = "contato.html" + (SUBJECT[cat] ? "?assunto=" + SUBJECT[cat] : "");
+  }
+  // Links como index.html?cat=pagamentos abrem a Central já filtrada.
+  function initFromAddress() {
+    const cat = new URLSearchParams(location.search).get("cat");
+    const chip = cat && $('.filter-chip[data-cat="' + cat + '"]');
+    if (chip) chip.click(); else syncCategoryExtras("all");
+  }
+
+  ready(() => { initTheme(); initFaq(); initSearch(); initChips(); initFromAddress(); });
 })();

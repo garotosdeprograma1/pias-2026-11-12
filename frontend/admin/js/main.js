@@ -73,11 +73,12 @@
     'servico.feito_pelo_funcionario':'Serviço concluído pelo profissional', 'servico.avaliado_e_confirmado':'Serviço avaliado pelo cliente',
     'pagamento.metodo_cadastrado':'Forma de pagamento cadastrada', 'pagamento.metodo_removido':'Forma de pagamento removida',
     'pagamento.simulado_sem_cobranca':'Pagamento simulado (sem cobrança)', erro_interno:'Erro interno',
+    'contato.enviado':'Mensagem de contato recebida', 'contato.status_alterado':'Mensagem de contato atualizada',
   };
   const MODULES = {
     login:'Acesso', logout:'Acesso', session:'Acesso', administracao:'Painel administrativo', admin:'Administração',
     clientes:'Clientes', funcionarios:'Funcionários', admins:'Administradores', servicos:'Catálogo',
-    os:'Pedidos', solicitacoes:'Solicitações', pagamentos:'Pagamentos', sistema:'Sistema',
+    os:'Pedidos', solicitacoes:'Solicitações', pagamentos:'Pagamentos', sistema:'Sistema', contato:'Contato',
   };
   const eventLabel = value => EVENTS[value] || value || 'Evento';
   const moduleLabel = value => MODULES[value] || value || '—';
@@ -197,6 +198,7 @@
     A.requireProfile('admin');
     document.querySelectorAll('[data-admin-name]').forEach(node => { node.textContent = user.nome; });
     document.querySelectorAll('[data-admin-initials]').forEach(node => { node.textContent = initials(user.nome); });
+    refreshMessageBadge();
     return user;
   });
   ready.catch(() => location.replace('/admin-login.html'));
@@ -216,7 +218,20 @@
     });
   }));
 
+  // Contador de mensagens de contato ainda não lidas, ao lado do item do menu.
+  async function refreshMessageBadge() {
+    try {
+      const data = await D.request('/api/admin/contatos?status=nova');
+      document.querySelectorAll('[data-new-messages]').forEach(node => {
+        node.textContent = data.total > 99 ? '99+' : String(data.total);
+        node.hidden = !data.total;
+        node.setAttribute('aria-label', plural(data.total, 'mensagem nova', 'mensagens novas'));
+      });
+    } catch { /* O contador é auxiliar: sem ele, o menu continua funcionando. */ }
+  }
+
   window.DafixAdmin = {
+    refreshMessageBadge,
     ready, icon, initials, phone, cpf, stamp, day, month, plural, eventLabel, moduleLabel,
     badge, roleBadge, statusBadge, resultBadge, orderState, orderBadge, ORDER_STATUS, ROLES,
     identity, empty, failure, skeleton, table, pager, kpi, bars, activity, toast, applyTheme,

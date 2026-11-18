@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#203b30" />
   <title>Contato — Suporte Dafix</title>
-  <meta name="description" content="Entre em contato com o suporte Dafix. Abra um ticket e receba resposta em até 4 horas." />
+  <meta name="description" content="Fale com a equipe DaFix: envie sua dúvida ou problema e receba a resposta pelo e-mail informado." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -51,7 +51,129 @@
     </div>
   </header>
 
-  <main id="main-content"><div class="page-wrap"><section class="section"><h1>Contato</h1><p class="data-empty">O envio de mensagens e os canais de atendimento ainda não estão disponíveis.</p><a class="btn btn--primary" href="index.html">Consultar a central de ajuda</a></section></div></main>
+  <main id="main-content">
+    <div class="page-wrap">
+      <header class="contact-head">
+        <p class="legal-head__eyebrow">Fale com a equipe</p>
+        <h1>Contato</h1>
+        <p>Não encontrou a resposta na Central de ajuda? Envie sua mensagem: ela chega à equipe da DaFix e a resposta vai para o e-mail que você informar.</p>
+      </header>
+
+      <div class="form-section">
+        <section class="form-card" aria-labelledby="contact-form-title">
+          <form id="contactForm" novalidate>
+            <h2 id="contact-form-title">Envie sua mensagem</h2>
+            <p>Campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
+            <p class="contact-signed" id="contactSigned" hidden></p>
+
+            <div class="field-row">
+              <div class="field" data-field="nome">
+                <label for="c-nome">Nome <span aria-hidden="true">*</span></label>
+                <input id="c-nome" name="nome" type="text" autocomplete="name" maxlength="100" required aria-describedby="c-nome-err">
+                <p class="field__error" id="c-nome-err"></p>
+              </div>
+              <div class="field" data-field="email">
+                <label for="c-email">E-mail para resposta <span aria-hidden="true">*</span></label>
+                <input id="c-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="c-email-err">
+                <p class="field__error" id="c-email-err"></p>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field" data-field="perfil">
+                <label for="c-perfil">Você é</label>
+                <select id="c-perfil" name="perfil">
+                  <option value="cliente">Cliente</option>
+                  <option value="funcionario">Profissional</option>
+                  <option value="visitante">Ainda não tenho conta</option>
+                </select>
+              </div>
+              <div class="field" data-field="assunto">
+                <label for="c-assunto">Assunto <span aria-hidden="true">*</span></label>
+                <select id="c-assunto" name="assunto" required aria-describedby="c-assunto-err">
+                  <option value="">Escolha o assunto</option>
+                  <option value="conta">Conta e acesso</option>
+                  <option value="pedidos">Pedidos e serviços</option>
+                  <option value="pagamentos">Pagamentos</option>
+                  <option value="tecnico">Problema técnico</option>
+                  <option value="privacidade">Privacidade e dados pessoais</option>
+                  <option value="outro">Outro assunto</option>
+                </select>
+                <p class="field__error" id="c-assunto-err"></p>
+              </div>
+            </div>
+
+            <div class="field" data-field="pedido" id="c-pedido-field" hidden>
+              <label for="c-pedido">Número do pedido <small>(opcional)</small></label>
+              <input id="c-pedido" name="pedido" type="text" inputmode="numeric" maxlength="9" placeholder="Ex.: 12" aria-describedby="c-pedido-hint c-pedido-err">
+              <p class="field__hint" id="c-pedido-hint">Aparece em Pedidos, na sua conta, como "Pedido #12".</p>
+              <p class="field__error" id="c-pedido-err"></p>
+            </div>
+
+            <div class="field" data-field="mensagem">
+              <label for="c-mensagem">Mensagem <span aria-hidden="true">*</span></label>
+              <textarea id="c-mensagem" name="mensagem" rows="6" maxlength="2000" required aria-describedby="c-mensagem-hint c-mensagem-err" placeholder="Conte o que aconteceu e o que você precisa."></textarea>
+              <p class="field__hint" id="c-mensagem-hint"><span id="c-mensagem-count">0</span>/2000 caracteres · mínimo de 20</p>
+              <p class="field__error" id="c-mensagem-err"></p>
+            </div>
+
+            <div class="contact-trap" aria-hidden="true">
+              <label for="c-site">Deixe este campo em branco</label>
+              <input id="c-site" name="site" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <p class="contact-privacy">Usamos seus dados só para responder a esta mensagem. Saiba mais na <a href="privacidade.html">Política de Privacidade</a>.</p>
+            <p class="contact-error" id="contactError" role="alert"></p>
+            <button class="form-submit" type="submit" id="contactSubmit">
+              <span class="btn-text">Enviar mensagem</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <div class="success-state" id="contactSuccess" tabindex="-1" aria-labelledby="contact-success-title">
+            <span class="success-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <h3 id="contact-success-title">Mensagem enviada</h3>
+            <p>A equipe recebeu sua mensagem e vai responder pelo e-mail <strong id="contactSuccessEmail"></strong>.</p>
+            <span class="ticket-id" id="contactProtocol"></span>
+            <p>Guarde este protocolo: ele identifica o seu atendimento.</p>
+            <div class="contact-success__actions">
+              <button type="button" class="contact-btn" id="contactAgain">Enviar outra mensagem</button>
+              <a class="contact-btn contact-btn--ghost" href="index.html">Voltar à Central de ajuda</a>
+            </div>
+          </div>
+        </section>
+
+        <aside class="form-aside" aria-label="Informações de atendimento">
+          <div class="info-card">
+            <h4>Antes de escrever</h4>
+            <p class="info-card__lead">Talvez a resposta já esteja na Central de ajuda:</p>
+            <ul class="contact-links">
+              <li><a href="index.html?cat=conta#faq-section">Conta e acesso</a></li>
+              <li><a href="index.html?cat=pedidos#faq-section">Pedidos e serviços</a></li>
+              <li><a href="index.html?cat=pagamentos#faq-section">Pagamentos</a></li>
+              <li><a href="index.html?cat=tecnico#faq-section">Problemas técnicos</a></li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>Como funciona</h4>
+            <ol class="contact-steps">
+              <li><span><strong>Você envia</strong> a mensagem e recebe um número de protocolo.</span></li>
+              <li><span><strong>A equipe lê</strong> no painel de administração da DaFix.</span></li>
+              <li><span><strong>A resposta chega</strong> pelo e-mail que você informou.</span></li>
+            </ol>
+          </div>
+          <div class="info-card">
+            <h4>Para agilizar</h4>
+            <ul class="info-list">
+              <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Informe o número do pedido, se houver.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Use o mesmo e-mail da sua conta.</li>
+              <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Nunca envie senhas nem dados de cartão.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer" role="contentinfo">
@@ -72,6 +194,8 @@
   </footer>
 
   <div id="toasts" aria-live="polite" aria-label="Notificações"></div>
+  <script src="/assets/js/account-session.js"></script>
   <script src="/suporte/js/suporte.js"></script>
+  <script src="/suporte/js/contato.js"></script>
 </body>
 </html>

@@ -100,8 +100,6 @@
        'profile.ordersChip': '%s pedidos registrados',
        'profile.security': 'Segurança da conta',
        'profile.lastAccess': 'Último acesso',
-       'profile.twoFactor': 'Verificação em 2 etapas',
-       'profile.active': 'Não configurada',
        'profile.device': 'Dispositivo',
        'profile.deviceValue': 'Navegador Web',
        'err.nameRequired': 'Informe seu nome completo (mín. 3 letras).',
@@ -307,8 +305,6 @@
        'profile.ordersChip': '%s registered orders',
        'profile.security': 'Account security',
        'profile.lastAccess': 'Last access',
-       'profile.twoFactor': 'Two-step verification',
-       'profile.active': 'Not configured',
        'profile.device': 'Device',
        'profile.deviceValue': 'Web Browser',
        'err.nameRequired': 'Enter your full name (min. 3 letters).',
@@ -1330,6 +1326,14 @@
 
      Language.init();
      Language.rerenderAll();
+     // Atalhos externos (ex.: Central de ajuda) abrem a seção indicada no endereço.
+     const openFromHash = () => {
+       const target = location.hash.slice(1);
+       if (target === 'profile') { Navigation.go('account'); Tabs.goAccount('profile'); }
+       else if (['account', 'orders', 'services', 'payments'].includes(target)) Navigation.go(target);
+     };
+     openFromHash();
+     window.addEventListener('hashchange', openFromHash);
      window.addEventListener('focus',loadRegisteredData);
      loadRegisteredData();
      Payments.load();

@@ -329,8 +329,8 @@
   // ---------------------------------------------------------------
   async function logs() {
     const timeline = view === 'atividades', state = {page: 1, rows: [], total: 0};
-    const events = ['login', 'logout', 'acesso', 'cadastro', 'alteracao', 'exclusao', 'permissoes.alteradas', 'pedido.aceito', 'pedido.excluido', 'servico.cadastrado', 'servico.alterado', 'servico.excluido', 'servico.feito_pelo_funcionario', 'servico.avaliado_e_confirmado', 'pagamento.metodo_cadastrado', 'pagamento.metodo_removido', 'pagamento.simulado_sem_cobranca', 'erro_interno'];
-    const modules = ['login', 'logout', 'clientes', 'funcionarios', 'admins', 'servicos', 'solicitacoes', 'os', 'pagamentos', 'administracao', 'sistema'];
+    const events = ['login', 'logout', 'acesso', 'cadastro', 'alteracao', 'exclusao', 'permissoes.alteradas', 'pedido.aceito', 'pedido.excluido', 'servico.cadastrado', 'servico.alterado', 'servico.excluido', 'servico.feito_pelo_funcionario', 'servico.avaliado_e_confirmado', 'pagamento.metodo_cadastrado', 'pagamento.metodo_removido', 'pagamento.simulado_sem_cobranca', 'erro_interno', 'contato.enviado', 'contato.status_alterado'];
+    const modules = ['login', 'logout', 'clientes', 'funcionarios', 'admins', 'servicos', 'solicitacoes', 'os', 'pagamentos', 'administracao', 'sistema', 'contato'];
     root.innerHTML = intro(timeline ? 'Operações recentes agrupadas por dia. As aberturas de páginas do painel ficam em <a class="link" href="logs.html">Logs do sistema</a>.' : 'Registro imutável das operações da API e dos acessos ao painel. Senhas, tokens e corpos de requisição não são gravados.', (timeline ? '' : '<button type="button" class="btn" id="log-export">' + U.icon('download') + 'Exportar página</button>') + refreshButton) +
       '<section class="card"><form class="toolbar toolbar--grid" id="log-filters">' + field('usuario', 'Usuário', 'search', '', 'placeholder="Nome de quem executou" maxlength="150"') +
         select('evento', 'Evento', [['', 'Todos'], ...events.map(e => [e, U.eventLabel(e)])]) + (timeline ? '' : select('modulo', 'Módulo', [['', 'Todos'], ...modules.map(m => [m, U.moduleLabel(m) + (m === 'logout' ? ' (saída)' : '')])])) +
@@ -391,9 +391,86 @@
   }
 
   // ---------------------------------------------------------------
+  // Mensagens de contato
+  // ---------------------------------------------------------------
+  const SUBJECTS = {conta: 'Conta e acesso', pedidos: 'Pedidos e serviços', pagamentos: 'Pagamentos', tecnico: 'Problema técnico', privacidade: 'Privacidade e dados', outro: 'Outro assunto'};
+  const MSG_STATUS = {nova: ['Nova', 'warning'], em_andamento: ['Em andamento', 'info'], respondida: ['Respondida', 'success'], arquivada: ['Arquivada', '']};
+  const SENDER = {cliente: 'Cliente', funcionario: 'Profissional', visitante: 'Sem conta'};
+  const protocol = id => 'DFX-' + String(id).padStart(6, '0');
+  async function messages() {
+    const state = {status: 'nova', page: 1, rows: [], totals: {}};
+    root.innerHTML = intro('Mensagens enviadas pela página de Contato. Responda pelo e-mail do remetente e atualize a situação para a equipe saber o que já foi tratado.', refreshButton) +
+      '<section class="card"><div class="toolbar"><div class="segmented" id="msg-status" role="group" aria-label="Filtrar por situação"></div></div>' +
+      '<form class="toolbar" id="msg-filters" style="padding-top:0"><label class="search"><span class="sr-only">Buscar por nome, e-mail ou texto</span>' + U.icon('search') + '<input class="input" name="busca" type="search" placeholder="Buscar por nome, e-mail ou texto da mensagem" maxlength="150"></label>' +
+      select('assunto', 'Assunto', [['', 'Todos'], ...Object.entries(SUBJECTS)]) + '<button class="btn btn--primary">Buscar</button></form>' +
+      '<div id="msg-list">' + U.skeleton([220]) + '</div><div class="card__foot"><span id="msg-count" role="status"></span><div id="msg-pager-slot"></div></div></section>' + footer;
+    const form = $('#msg-filters');
+    function renderStatus() {
+      const all = Object.values(state.totals).reduce((a, b) => a + b, 0);
+      $('#msg-status').innerHTML = [...Object.entries(MSG_STATUS).map(([k, [label]]) => [k, label, state.totals[k] || 0]), ['', 'Todas', all]]
+        .map(([k, label, n]) => '<button type="button" data-status="' + k + '" aria-pressed="' + (state.status === k) + '">' + label + ' <span class="count">' + n + '</span></button>').join('');
+    }
+    async function update() {
+      const query = new URLSearchParams();
+      for (const [key, value] of new FormData(form)) if (value) query.set(key, value);
+      if (state.status) query.set('status', state.status);
+      query.set('pagina', state.page);
+      const data = await D.request('/api/admin/contatos?' + query);
+      state.rows = data.registros; state.totals = data.por_status;
+      renderStatus();
+      const pages = Math.max(1, Math.ceil(data.total / 20));
+      $('#msg-list').innerHTML = U.table(
+        [{label: 'Protocolo', cls: 'nowrap'}, {label: 'Remetente', main: true}, {label: 'Assunto'}, {label: 'Recebida', cls: 'nowrap'}, {label: 'Situação'}, {label: 'Ações', cls: 'col-actions'}],
+        state.rows.map((m, i) => ['<strong class="num">' + protocol(m.id) + '</strong>', U.identity(m.nome, m.email, SENDER[m.perfil]), E(SUBJECTS[m.assunto] || m.assunto) + (m.pedido ? ' <span class="muted">· pedido #' + m.pedido + '</span>' : ''), E(U.stamp(m.criado_em)), U.badge(...MSG_STATUS[m.status]), '<button type="button" class="btn btn--sm" data-message="' + i + '">' + U.icon('eye') + 'Abrir</button>']),
+        {empty: U.empty(state.status === 'nova' ? 'Nenhuma mensagem nova' : 'Nenhuma mensagem encontrada', state.status === 'nova' ? 'As mensagens enviadas pela página de Contato aparecem aqui.' : 'Ajuste os filtros para ampliar a busca.', 'info')});
+      $('#msg-count').textContent = U.plural(data.total, 'mensagem', 'mensagens');
+      $('#msg-pager-slot').innerHTML = U.pager('msg-pager', state.page, pages);
+      paginate('msg-pager', page => { state.page = page; guarded(); });
+      U.refreshMessageBadge();
+    }
+    const guarded = async () => { try { await update(); } catch (error) { U.toast(error.message, 'error'); } };
+    $('#msg-status').onclick = event => { const b = event.target.closest('[data-status]'); if (!b) return; state.status = b.dataset.status; state.page = 1; guarded(); };
+    form.onsubmit = event => { event.preventDefault(); state.page = 1; guarded(); };
+    form.elements.assunto.onchange = () => { state.page = 1; guarded(); };
+    $('#msg-list').onclick = event => { const b = event.target.closest('[data-message]'); if (b) openMessage(state.rows[Number(b.dataset.message)]); };
+
+    function openMessage(m) {
+      const subject = 'Re: [' + protocol(m.id) + '] ' + (SUBJECTS[m.assunto] || 'Contato DaFix');
+      const quoted = m.mensagem.split('\n').map(line => '> ' + line).join('\n');
+      const mailto = 'mailto:' + encodeURIComponent(m.email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent('Olá, ' + m.nome + '.\n\n\n\n---\nSua mensagem (' + protocol(m.id) + '):\n' + quoted);
+      const account = m.conta_tipo ? (U.ROLES[m.conta_tipo] || [m.conta_tipo])[0] + ' #' + m.conta_id + ' (enviada com a conta conectada)' : 'Enviada sem estar conectado';
+      const dialog = U.openDialog({
+        title: protocol(m.id) + ' · ' + (SUBJECTS[m.assunto] || m.assunto), size: 'lg',
+        body: '<dl class="def-list">' + [
+          ['Situação', U.badge(...MSG_STATUS[m.status])], ['Remetente', E(m.nome) + ' · ' + E(SENDER[m.perfil])], ['E-mail para resposta', '<a class="link" href="mailto:' + E(m.email) + '">' + E(m.email) + '</a>'],
+          ['Conta', E(account)], ['Pedido', m.pedido ? '#' + m.pedido : '<span class="muted">Não informado</span>'], ['Recebida em', E(U.stamp(m.criado_em))], ['Última atualização', E(U.stamp(m.atualizado_em))],
+        ].map(([k, v]) => '<div><dt>' + k + '</dt><dd>' + v + '</dd></div>').join('') + '</dl>' +
+          '<div><h3 class="sr-only">Mensagem</h3><p class="message-text">' + E(m.mensagem) + '</p></div><p class="form-message" id="msg-error" role="alert"></p>',
+        foot: '<a class="btn btn--primary push-left" href="' + E(mailto) + '" id="msg-reply">' + U.icon('edit') + 'Responder por e-mail</a>' +
+          Object.entries(MSG_STATUS).filter(([k]) => k !== m.status && k !== 'nova').map(([k, [label]]) => '<button type="button" class="btn" data-set-status="' + k + '">' + (k === 'arquivada' ? 'Arquivar' : 'Marcar como ' + label.toLowerCase()) + '</button>').join('') +
+          (m.status !== 'nova' ? '<button type="button" class="btn btn--ghost" data-set-status="nova">Reabrir como nova</button>' : ''),
+      });
+      async function setStatus(status, quiet) {
+        dialog.querySelectorAll('.dialog__foot button').forEach(b => { b.disabled = true; });
+        try {
+          await D.request('/api/admin/contatos/' + m.id, send('PATCH', {status}));
+          m.status = status;
+          if (!quiet) { U.closeDialog(); U.toast('Mensagem ' + protocol(m.id) + ': ' + MSG_STATUS[status][0].toLowerCase() + '.'); }
+          await guarded();
+        } catch (error) { $('#msg-error').textContent = error.message; }
+        finally { dialog.querySelectorAll('.dialog__foot button').forEach(b => { b.disabled = false; }); }
+      }
+      dialog.querySelectorAll('[data-set-status]').forEach(b => { b.onclick = () => setStatus(b.dataset.setStatus); });
+      // Abrir o e-mail de resposta indica que a mensagem está sendo tratada.
+      $('#msg-reply').addEventListener('click', () => { if (m.status === 'nova') setStatus('em_andamento', true); });
+    }
+    await update();
+  }
+
+  // ---------------------------------------------------------------
   // Carregamento com estado de erro e nova tentativa
   // ---------------------------------------------------------------
-  const views = {dashboard, relatorios: reports, usuarios: people, permissoes: permissions, logs, atividades: logs, configuracoes: settings};
+  const views = {dashboard, relatorios: reports, usuarios: people, permissoes: permissions, logs, atividades: logs, configuracoes: settings, mensagens: messages};
   let pending = false;
   async function load() {
     if (pending) return; pending = true; root.setAttribute('aria-busy', 'true');
