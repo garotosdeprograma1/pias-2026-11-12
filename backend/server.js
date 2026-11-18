@@ -329,6 +329,10 @@ var servidor = http.createServer(async function (req, res) {
     for(const [key,item] of contactAttempts)if(item.until<now)contactAttempts.delete(key);
     const attempt=contactAttempts.get(ip)||{count:0,until:now+15*60*1000};
     if(attempt.count>=5)return responderJson(res,429,{erro:'Você enviou várias mensagens em pouco tempo. Aguarde alguns minutos e tente novamente.'});
+    // A vaga é reservada antes de qualquer espera: envios simultâneos não passam todos pela verificação.
+    // Ela é devolvida se o envio for recusado ou falhar, porque nesse caso nada foi gravado.
+    attempt.count++;contactAttempts.set(ip,attempt);
+    let accepted=false;
     try {
       const data=await jsonBody(req);
       const allowed=['nome','email','perfil','assunto','pedido','mensagem','site'];
@@ -345,11 +349,11 @@ var servidor = http.createServer(async function (req, res) {
       const perfil=session && ['cliente','funcionario'].includes(session.perfil)?session.perfil:(['cliente','funcionario','visitante'].includes(data.perfil)?data.perfil:'visitante');
       const result=await sqlRun('INSERT INTO contato_mensagem (nome,email,perfil,assunto,pedido,mensagem,conta_tipo,conta_id) VALUES (?,?,?,?,?,?,?,?)',
         [data.nome.trim(),data.email.trim().toLowerCase(),perfil,data.assunto,data.pedido || null,data.mensagem.trim(),session?.perfil || null,session?.usuario.id || null]);
-      // Só mensagens aceitas contam para o limite: um envio recusado não grava nada.
-      attempt.count++;contactAttempts.set(ip,attempt);
+      accepted=true;
       res.audit.action='contato.enviado';
       return responderJson(res,201,{id:result.id,protocolo:'DFX-'+String(result.id).padStart(6,'0')});
     } catch(error) {return responderJson(res,error.code?500:400,{erro:error.code?'Não foi possível enviar a mensagem. Tente novamente.':'Dados inválidos ou muito longos.'});}
+    finally { if(!accepted)attempt.count--; }
   }
 
   // Informações públicas sem dados de contato ou documentos dos usuários.

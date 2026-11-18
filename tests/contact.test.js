@@ -89,9 +89,17 @@ test('contact messages are validated, rate limited, tied to the session and mana
     assert.equal(logs.total,2);assert(!JSON.stringify(logs).includes(message.mensagem));
   });
 
+  await t.test('simultaneous sends cannot get past the limit',async()=>{
+    // Duas mensagens já foram aceitas; restam três vagas, mesmo com dez envios ao mesmo tempo.
+    const results=await Promise.all(Array.from({length:10},()=>post('/api/contato',message)));
+    const accepted=results.filter(r=>r.status===201).length;
+    assert.equal(accepted,3,'aceitas: '+accepted);
+    assert(results.every(r=>[201,429].includes(r.status)));
+    // As nove recusas por validação do teste anterior devolveram a vaga; se tivessem consumido, nenhuma seria aceita.
+  });
+
   await t.test('each address can send at most five messages every 15 minutes',async()=>{
-    // Duas mensagens já foram aceitas; recusas por validação não contam para o limite.
-    for(let i=0;i<3;i++)ok(await post('/api/contato',message),201);
+    // As cinco vagas foram usadas: qualquer novo envio é recusado com uma mensagem clara.
     const r=await post('/api/contato',message);assert.equal(r.status,429);assert(r.data.erro);
   });
 });
