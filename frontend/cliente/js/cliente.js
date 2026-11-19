@@ -222,6 +222,120 @@
        'foot.help': 'Central de ajuda',
        'foot.terms': 'Termos',
        'foot.privacy': 'Privacidade',
+       'orders.refresh': 'Atualizar pedidos',
+       'order.number': 'Pedido #%s',
+       'order.professional': 'Profissional',
+       'order.date': 'Data desejada',
+       'order.address': 'Endereço',
+       'order.amount': 'Valor registrado',
+       'order.status.done': 'Concluído e avaliado',
+       'order.status.review': 'Feito pelo profissional · aguardando sua avaliação',
+       'order.status.progress': 'Em atendimento',
+       'order.status.waiting': 'Aguardando aceite',
+       'order.paySimulated': 'Simulado — sem cobrança',
+       'order.payPending': 'Pagamento: simulação ainda não registrada',
+       'order.yourRating': 'Sua avaliação',
+       'order.noComment': 'Sem comentário.',
+       'order.confirmedOn': 'Conclusão confirmada em %s',
+       'order.rateLater': 'A avaliação será liberada quando o profissional marcar o serviço como feito.',
+       'order.none': 'Nenhum pedido cadastrado para esta conta.',
+       'order.created': 'Pedido #%s registrado.',
+       'stat.orders': 'Pedidos registrados',
+       'stat.services': 'Serviços no catálogo',
+       'stat.favorites': 'Favoritos',
+       'stat.unavailable': 'Resumo indisponível.',
+       'notif.none': 'Nenhuma notificação registrada.',
+       'services.allCats': 'Todos os serviços',
+       'services.none': 'Nenhum serviço encontrado.',
+       'services.request': 'Solicitar serviço',
+       'services.favAdd': 'Favoritar',
+       'services.favRemove': 'Remover dos favoritos',
+       'pay.title': 'Formas de pagamento',
+       'pay.subtitle': 'Cadastre suas preferências para testar o pagamento dos pedidos.',
+       'pay.add': 'Adicionar forma de pagamento',
+       'pay.demo': 'Ambiente demonstrativo: nenhum valor será cobrado. Use somente dados de teste nos cartões. Não há transferência Pix nem processamento bancário.',
+       'pay.formDemo': 'Cadastro demonstrativo. Nenhuma cobrança será feita. O número e o código de segurança são descartados e nunca enviados ao servidor.',
+       'pay.method': 'Forma de pagamento',
+       'pay.type.credito': 'Cartão de crédito',
+       'pay.type.debito': 'Cartão de débito',
+       'pay.type.pix': 'Pix',
+       'pay.type.dinheiro': 'Dinheiro',
+       'pay.nickname': 'Apelido (opcional)',
+       'pay.nicknamePh': 'Ex.: cartão de teste',
+       'pay.testCard': 'Cartão de teste',
+       'pay.holder': 'Nome no cartão',
+       'pay.number': 'Número do cartão de teste',
+       'pay.example': 'Exemplo para testar: 4242 4242 4242 4242.',
+       'pay.expiry': 'Validade',
+       'pay.cvv': 'Código de segurança de teste',
+       'pay.brand': 'Bandeira',
+       'pay.brandOther': 'Outra',
+       'pay.save': 'Salvar forma de pagamento',
+       'pay.helpDefault': 'Esta opção será usada apenas para simulação. Para pagar por Pix, o pagador não precisa cadastrar uma chave.',
+       'pay.helpPix': 'Pix demonstrativo: você não precisa informar uma chave para pagar. Nenhum código transferível ou QR Code bancário será gerado.',
+       'pay.helpCash': 'Dinheiro demonstrativo: registra apenas sua preferência. Não confirma recebimento de dinheiro.',
+       'pay.chip': 'Demonstrativo',
+       'pay.ending': 'final',
+       'pay.expires': 'validade',
+       'pay.simOnly': 'Disponível apenas para simulação, sem movimentar dinheiro.',
+       'pay.remove': 'Remover',
+       'pay.none': 'Nenhuma forma de pagamento cadastrada. Adicione cartão de teste, Pix ou dinheiro.',
+       'pay.loading': 'Carregando formas de pagamento…',
+       'pay.loadingYours': 'Carregando suas formas de pagamento…',
+       'pay.retry': 'Tentar novamente',
+       'pay.invalidCard': 'Informe um número de cartão de teste válido. Exemplo: 4242 4242 4242 4242.',
+       'pay.saving': 'Salvando preferência demonstrativa…',
+       'pay.saved': 'Forma de pagamento demonstrativa cadastrada.',
+       'pay.refill': 'Se necessário, preencha novamente os dados de teste.',
+       'pay.needMethod': 'Cadastre uma forma de pagamento para continuar.',
+       'pay.simTitle': 'Simular pagamento',
+       'pay.simDemo': 'Simulação — sem cobrança. Nenhum dinheiro será movimentado.',
+       'pay.simHelpPix': 'Pix de demonstração: confirme abaixo para registrar a simulação. Não será gerado um código bancário.',
+       'pay.simHelpCash': 'A confirmação registra uma simulação; não comprova recebimento de dinheiro.',
+       'pay.simHelpCard': 'O cartão cadastrado é uma preferência demonstrativa. Nenhuma transação será enviada a um banco.',
+       'pay.addOther': 'Cadastrar outra forma',
+       'pay.confirmSim': 'Confirmar pagamento simulado',
+       'pay.simSaving': 'Registrando simulação…',
+       'pay.simDone': 'Pagamento simulado registrado. Nenhum valor foi cobrado.',
+       'pay.removeTitle': 'Remover forma de pagamento?',
+       'pay.removeText': 'Os registros de pagamentos simulados anteriores serão preservados.',
+       'pay.removeConfirm': 'Confirmar remoção',
+       'pay.removed': 'Forma de pagamento removida.',
+       'rate.title': 'Avaliar e confirmar conclusão',
+       'rate.intro': 'O profissional marcou este serviço como feito. Ao enviar sua avaliação, você também confirma a conclusão do atendimento.',
+       'rate.legend': 'Como foi o serviço?',
+       'rate.comment': 'Comentário (opcional)',
+       'rate.commentPh': 'Conte como foi o atendimento.',
+       'rate.submit': 'Enviar avaliação e concluir',
+       'rate.none': 'Nenhum serviço aguardando sua avaliação.',
+       'rate.saving': 'Salvando avaliação e confirmação…',
+       'rate.done': 'Avaliação enviada e conclusão confirmada.',
+       'req.titleFor': 'Solicitar %s',
+       'req.intro': 'Seu pedido ficará disponível para os profissionais. Acompanhe em Pedidos quando alguém aceitar.',
+       'req.address': 'Endereço do atendimento',
+       'req.desc': 'Descreva o que precisa',
+       'req.submit': 'Confirmar solicitação',
+       'req.wait': 'A solicitação ficará aguardando o aceite de um profissional.',
+       'req.accountChanged': 'Sua conta mudou. Entre novamente antes de solicitar.',
+       'req.saving': 'Registrando pedido…',
+       'common.close': 'Fechar',
+       'common.cancel': 'Cancelar',
+       'aria.mainNav': 'Navegação principal',
+       'aria.profile': 'Perfil',
+       'aria.openProfile': 'Abrir perfil',
+       'aria.logout': 'Sair da conta',
+       'aria.accountSections': 'Seções da conta',
+       'aria.changePhoto': 'Alterar foto de perfil',
+       'aria.catalogTabs': 'Catálogo e favoritos',
+       'aria.searchServices': 'Buscar serviços',
+       'aria.filterPrice': 'Filtrar por preço',
+       'aria.filterCategory': 'Filtrar por categoria',
+       'aria.sort': 'Ordenar por',
+       'aria.notifications': 'Notificações',
+       'aria.theme': 'Alternar tema claro/escuro',
+       'aria.language': 'Mudar idioma para inglês',
+       'aria.openMenu': 'Abrir menu',
+       'profile.notProvided': 'Não informado',
        'toast.profileSaved': 'Perfil salvo neste navegador.',
        'toast.profileError': 'Não foi possível salvar o perfil. Tente novamente.',
        'toast.formError': 'Verifique os campos destacados.',
@@ -427,6 +541,120 @@
        'foot.help': 'Help center',
        'foot.terms': 'Terms',
        'foot.privacy': 'Privacy',
+       'orders.refresh': 'Refresh orders',
+       'order.number': 'Order #%s',
+       'order.professional': 'Professional',
+       'order.date': 'Preferred date',
+       'order.address': 'Address',
+       'order.amount': 'Registered amount',
+       'order.status.done': 'Completed and rated',
+       'order.status.review': 'Done by the professional · awaiting your rating',
+       'order.status.progress': 'In progress',
+       'order.status.waiting': 'Awaiting acceptance',
+       'order.paySimulated': 'Simulated — no charge',
+       'order.payPending': 'Payment: no simulation recorded yet',
+       'order.yourRating': 'Your rating',
+       'order.noComment': 'No comment.',
+       'order.confirmedOn': 'Completion confirmed on %s',
+       'order.rateLater': 'Rating becomes available once the professional marks the service as done.',
+       'order.none': 'No orders for this account yet.',
+       'order.created': 'Order #%s placed.',
+       'stat.orders': 'Registered orders',
+       'stat.services': 'Services in the catalog',
+       'stat.favorites': 'Favorites',
+       'stat.unavailable': 'Summary unavailable.',
+       'notif.none': 'No notifications yet.',
+       'services.allCats': 'All services',
+       'services.none': 'No services found.',
+       'services.request': 'Request service',
+       'services.favAdd': 'Add to favorites',
+       'services.favRemove': 'Remove from favorites',
+       'pay.title': 'Payment methods',
+       'pay.subtitle': 'Add your preferences to test paying for orders.',
+       'pay.add': 'Add payment method',
+       'pay.demo': 'Demo environment: nothing will be charged. Use test card data only. There are no Pix transfers or bank processing.',
+       'pay.formDemo': 'Demo registration. Nothing will be charged. The card number and security code are discarded and never sent to the server.',
+       'pay.method': 'Payment method',
+       'pay.type.credito': 'Credit card',
+       'pay.type.debito': 'Debit card',
+       'pay.type.pix': 'Pix',
+       'pay.type.dinheiro': 'Cash',
+       'pay.nickname': 'Nickname (optional)',
+       'pay.nicknamePh': 'e.g. test card',
+       'pay.testCard': 'Test card',
+       'pay.holder': 'Name on card',
+       'pay.number': 'Test card number',
+       'pay.example': 'Test example: 4242 4242 4242 4242.',
+       'pay.expiry': 'Expiry',
+       'pay.cvv': 'Test security code',
+       'pay.brand': 'Card brand',
+       'pay.brandOther': 'Other',
+       'pay.save': 'Save payment method',
+       'pay.helpDefault': 'This option is used for simulation only. To pay by Pix, the payer does not need to register a key.',
+       'pay.helpPix': 'Demo Pix: you do not need to enter a key to pay. No transferable code or bank QR code will be generated.',
+       'pay.helpCash': 'Demo cash: only records your preference. It does not confirm that money was received.',
+       'pay.chip': 'Demo',
+       'pay.ending': 'ending in',
+       'pay.expires': 'expires',
+       'pay.simOnly': 'Available for simulation only; no money is moved.',
+       'pay.remove': 'Remove',
+       'pay.none': 'No payment methods yet. Add a test card, Pix or cash.',
+       'pay.loading': 'Loading payment methods…',
+       'pay.loadingYours': 'Loading your payment methods…',
+       'pay.retry': 'Try again',
+       'pay.invalidCard': 'Enter a valid test card number. Example: 4242 4242 4242 4242.',
+       'pay.saving': 'Saving demo preference…',
+       'pay.saved': 'Demo payment method added.',
+       'pay.refill': 'If needed, enter the test data again.',
+       'pay.needMethod': 'Add a payment method to continue.',
+       'pay.simTitle': 'Simulate payment',
+       'pay.simDemo': 'Simulation — no charge. No money will be moved.',
+       'pay.simHelpPix': 'Demo Pix: confirm below to record the simulation. No bank code will be generated.',
+       'pay.simHelpCash': 'Confirming records a simulation; it does not prove money was received.',
+       'pay.simHelpCard': 'The saved card is a demo preference. No transaction will be sent to a bank.',
+       'pay.addOther': 'Add another method',
+       'pay.confirmSim': 'Confirm simulated payment',
+       'pay.simSaving': 'Recording simulation…',
+       'pay.simDone': 'Simulated payment recorded. Nothing was charged.',
+       'pay.removeTitle': 'Remove payment method?',
+       'pay.removeText': 'Records of previous simulated payments will be kept.',
+       'pay.removeConfirm': 'Confirm removal',
+       'pay.removed': 'Payment method removed.',
+       'rate.title': 'Rate and confirm completion',
+       'rate.intro': 'The professional marked this service as done. By sending your rating, you also confirm the service was completed.',
+       'rate.legend': 'How was the service?',
+       'rate.comment': 'Comment (optional)',
+       'rate.commentPh': 'Tell us how the service went.',
+       'rate.submit': 'Send rating and complete',
+       'rate.none': 'No service awaiting your rating.',
+       'rate.saving': 'Saving rating and confirmation…',
+       'rate.done': 'Rating sent and completion confirmed.',
+       'req.titleFor': 'Request %s',
+       'req.intro': 'Your order will be available to professionals. Follow it in Orders until someone accepts it.',
+       'req.address': 'Service address',
+       'req.desc': 'Describe what you need',
+       'req.submit': 'Confirm request',
+       'req.wait': 'The request will wait for a professional to accept it.',
+       'req.accountChanged': 'Your account changed. Sign in again before requesting.',
+       'req.saving': 'Placing order…',
+       'common.close': 'Close',
+       'common.cancel': 'Cancel',
+       'aria.mainNav': 'Main navigation',
+       'aria.profile': 'Profile',
+       'aria.openProfile': 'Open profile',
+       'aria.logout': 'Sign out',
+       'aria.accountSections': 'Account sections',
+       'aria.changePhoto': 'Change profile photo',
+       'aria.catalogTabs': 'Catalog and favorites',
+       'aria.searchServices': 'Search services',
+       'aria.filterPrice': 'Filter by price',
+       'aria.filterCategory': 'Filter by category',
+       'aria.sort': 'Sort by',
+       'aria.notifications': 'Notifications',
+       'aria.theme': 'Toggle light/dark theme',
+       'aria.language': 'Switch language to Portuguese',
+       'aria.openMenu': 'Open menu',
+       'profile.notProvided': 'Not provided',
        'toast.profileSaved': 'Profile saved in this browser.',
        'toast.profileError': 'Could not save your profile. Please try again.',
        'toast.formError': 'Please check the highlighted fields.',
@@ -510,7 +738,7 @@
    const profile = session ? account.loadProfile() : {};
 
    const state = {
-     lang: storage.get('sh_lang', 'pt'),
+     lang: ['pt', 'en'].includes(localStorage.getItem('dafix_lang')) ? localStorage.getItem('dafix_lang') : storage.get('sh_lang', 'pt'),
      theme: storage.raw('dafix_theme', storage.get('sh_theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')),
      user: {
        name: '', email: '', phone: '', address: '', avatar: null,
@@ -535,6 +763,7 @@
    };
 
    const t = (key) => (I18N[state.lang] && I18N[state.lang][key]) || I18N.pt[key] || key;
+   window.DafixI18n = { t };
 
    const fmtMoney = (v) => new Intl.NumberFormat(state.lang === 'pt' ? 'pt-BR' : 'en-US', { style: 'currency', currency: 'BRL' }).format(v);
 
@@ -577,6 +806,9 @@
    const Language = {
      applyStatic() {
        $$('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+       $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+       $$('[data-i18n-title]').forEach((el) => { el.title = t(el.dataset.i18nTitle); });
+       $$('[data-i18n-ph]').forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
        $('#service-search').placeholder = t('services.searchPlaceholder');
        document.documentElement.lang = state.lang === 'pt' ? 'pt-BR' : 'en';
        $('#lang-label').textContent = state.lang === 'pt' ? 'EN' : 'PT';
@@ -589,6 +821,7 @@
        Profile.fill();
        Reports.render();
        Orders.render();
+       Payments.render();
        Services.renderFilters();
        Services.render();
        Tabs.placeAll();
@@ -596,6 +829,7 @@
      toggle() {
        state.lang = state.lang === 'pt' ? 'en' : 'pt';
        storage.set('sh_lang', state.lang);
+       localStorage.setItem('dafix_lang', state.lang);
        Language.rerenderAll();
      },
      init() {
@@ -697,7 +931,7 @@
 
      renderStats() {
        $('#stats-grid').innerHTML = [
-         ['Pedidos registrados', state.orders.length], ['Serviços no catálogo', SERVICES.length], ['Favoritos', state.favorites.length]
+         [t('stat.orders'), state.orders.length], [t('stat.services'), SERVICES.length], [t('stat.favorites'), state.favorites.length]
        ].map(([label,value]) => `<div class="metric"><div class="metric__value">${value}</div><div class="metric__label">${label}</div></div>`).join('');
      },
 
@@ -1021,9 +1255,9 @@
        const D=window.DafixData;
        $('#orders-empty').hidden=true;
        $('#orders-list').innerHTML=state.orders.length?state.orders.map(o=>{
-         const status=o.confirmado_cliente_em?'Concluído e avaliado':o.concluido_funcionario_em?'Feito pelo profissional · aguardando sua avaliação':o.id_funcionario?'Em atendimento':'Aguardando aceite';
-         return `<article class="client-order-card"><div class="payment-heading"><div><span class="client-order-number">Pedido #${o.id}</span><h3>${D.escape(o.servico)}</h3></div><span class="chip ${o.confirmado_cliente_em?'chip--green':''}">${status}</span></div><dl class="client-order-details"><div><dt>Profissional</dt><dd>${D.escape(o.funcionario||'Aguardando aceite')}</dd></div><div><dt>Data desejada</dt><dd>${D.date(o.data)}</dd></div><div><dt>Endereço</dt><dd>${D.escape(o.local)}</dd></div><div><dt>Valor registrado</dt><dd>${D.money(o.preco_unitario)}</dd></div></dl><p>${D.escape(o.descricao||'')}</p><p class="order-payment-state">${o.pagamento_simulado_em?'Simulado — sem cobrança · '+D.escape(Payments.typeName(o.pagamento_tipo))+(o.pagamento_ultimos4?' · final '+D.escape(o.pagamento_ultimos4):''):'Pagamento: simulação ainda não registrada'}</p>${o.avaliacao_nota?`<div class="order-review"><strong>Sua avaliação: ${o.avaliacao_nota}/5 ★</strong><p>${D.escape(o.avaliacao_comentario||'Sem comentário.')}</p><small>Conclusão confirmada em ${fmtDate(o.confirmado_cliente_em,true)}</small></div>`:''}<div class="payment-actions">${o.pagamento_simulado_em?'':`<button type="button" class="btn btn--ghost" data-pay-order="${o.id}">Simular pagamento</button>`}${o.confirmado_cliente_em?'':`<button type="button" class="btn btn--primary" data-rate-order="${o.id}" ${o.concluido_funcionario_em?'':'disabled'}>Avaliar e confirmar conclusão</button>`}</div>${!o.concluido_funcionario_em?'<small>A avaliação será liberada quando o profissional marcar o serviço como feito.</small>':''}</article>`;
-       }).join(''):D.empty('Nenhum pedido cadastrado para esta conta.');
+         const status=t(o.confirmado_cliente_em?'order.status.done':o.concluido_funcionario_em?'order.status.review':o.id_funcionario?'order.status.progress':'order.status.waiting');
+         return `<article class="client-order-card"><div class="payment-heading"><div><span class="client-order-number">${t('order.number').replace('%s',o.id)}</span><h3>${D.escape(o.servico)}</h3></div><span class="chip ${o.confirmado_cliente_em?'chip--green':''}">${status}</span></div><dl class="client-order-details"><div><dt>${t('order.professional')}</dt><dd>${D.escape(o.funcionario||t('order.status.waiting'))}</dd></div><div><dt>${t('order.date')}</dt><dd>${D.date(o.data)}</dd></div><div><dt>${t('order.address')}</dt><dd>${D.escape(o.local)}</dd></div><div><dt>${t('order.amount')}</dt><dd>${D.money(o.preco_unitario)}</dd></div></dl><p>${D.escape(o.descricao||'')}</p><p class="order-payment-state">${o.pagamento_simulado_em?t('order.paySimulated')+' · '+D.escape(Payments.typeName(o.pagamento_tipo))+(o.pagamento_ultimos4?' · '+t('pay.ending')+' '+D.escape(o.pagamento_ultimos4):''):t('order.payPending')}</p>${o.avaliacao_nota?`<div class="order-review"><strong>${t('order.yourRating')}: ${o.avaliacao_nota}/5 ★</strong><p>${D.escape(o.avaliacao_comentario||t('order.noComment'))}</p><small>${t('order.confirmedOn').replace('%s',fmtDate(o.confirmado_cliente_em,true))}</small></div>`:''}<div class="payment-actions">${o.pagamento_simulado_em?'':`<button type="button" class="btn btn--ghost" data-pay-order="${o.id}">${t('pay.simTitle')}</button>`}${o.confirmado_cliente_em?'':`<button type="button" class="btn btn--primary" data-rate-order="${o.id}" ${o.concluido_funcionario_em?'':'disabled'}>${t('rate.title')}</button>`}</div>${!o.concluido_funcionario_em?'<small>'+t('order.rateLater')+'</small>':''}</article>`;
+       }).join(''):D.empty(t('order.none'));
      },
      expand() { Navigation.go('orders'); },
      init() {
@@ -1039,7 +1273,7 @@
 
    const Services = {
      renderFilters() {
-       const cats = [{ v: 'all', l: 'Todos os serviços' }];
+       const cats = [{ v: 'all', l: t('services.allCats') }];
        const prices = [
          { v: 'all', l: t('price.all') }, { v: 'low', l: t('price.low') }, { v: 'mid', l: t('price.mid') }, { v: 'high', l: t('price.high') },
        ];
@@ -1084,9 +1318,9 @@
        const D=window.DafixData;
        const items=Services.filtered();
        $('#services-empty').hidden=items.length>0;
-       $('#services-empty-text').textContent='Nenhum serviço encontrado.';
+       $('#services-empty-text').textContent=t('services.none');
        $('#fav-count').textContent=state.favorites.length;
-       $('#services-grid').innerHTML=items.map(service=>`<article class="service-card"><h3>${D.escape(service.name[state.lang])}</h3><p>${D.escape(service.desc[state.lang])}</p><strong>${D.money(service.priceMin)}</strong><button class="btn btn--primary" data-request-service="${service.id}">Solicitar serviço</button><button class="btn btn--ghost" data-favorite="${service.id}">${state.favorites.includes(service.id)?'Remover dos favoritos':'Favoritar'}</button></article>`).join('');
+       $('#services-grid').innerHTML=items.map(service=>`<article class="service-card"><h3>${D.escape(service.name[state.lang])}</h3><p>${D.escape(service.desc[state.lang])}</p><strong>${D.money(service.priceMin)}</strong><button class="btn btn--primary" data-request-service="${service.id}">${t('services.request')}</button><button class="btn btn--ghost" data-favorite="${service.id}">${t(state.favorites.includes(service.id)?'services.favRemove':'services.favAdd')}</button></article>`).join('');
        $$('[data-favorite]').forEach(button=>button.addEventListener('click',()=>Services.toggleFav(button.dataset.favorite)));
      },
 
@@ -1136,23 +1370,23 @@
    };
    const Payments = {
      methods: [], pending: false, orderId:null, removeId:null,
-     typeName(type) { return ({credito:'Cartão de crédito',debito:'Cartão de débito',pix:'Pix',dinheiro:'Dinheiro'})[type] || 'Forma de pagamento'; },
-     label(method) { return Payments.typeName(method.tipo)+(method.ultimos4?' · final '+method.ultimos4:'')+(method.apelido?' · '+method.apelido:''); },
+     typeName(type) { return ['credito','debito','pix','dinheiro'].includes(type) ? t('pay.type.'+type) : t('pay.method'); },
+     label(method) { return Payments.typeName(method.tipo)+(method.ultimos4?' · '+t('pay.ending')+' '+method.ultimos4:'')+(method.apelido?' · '+method.apelido:''); },
      async load() {
        const target=$('#payment-method-list');
-       target.innerHTML=window.DafixData.empty('Carregando formas de pagamento…');
+       target.innerHTML=window.DafixData.empty(t('pay.loading'));
        try { Payments.methods=await window.DafixData.list('/api/pagamentos/metodos'); Payments.render(); }
-       catch(error) { Payments.methods=[];target.innerHTML=window.DafixData.empty(error.message)+'<button type="button" class="btn btn--ghost" id="payment-retry">Tentar novamente</button>';$('#payment-retry').onclick=Payments.load; }
+       catch(error) { Payments.methods=[];target.innerHTML=window.DafixData.empty(error.message)+'<button type="button" class="btn btn--ghost" id="payment-retry">'+t('pay.retry')+'</button>';$('#payment-retry').onclick=Payments.load; }
      },
      render() {
        const D=window.DafixData;
-       $('#payment-method-list').innerHTML=Payments.methods.length?Payments.methods.map(m=>`<article class="payment-method-card"><div><span class="chip">Demonstrativo</span><h3>${D.escape(Payments.label(m))}</h3>${m.ultimos4?`<p>${D.escape(m.titular)} · ${D.escape(m.bandeira)} · validade ${D.escape(m.validade)}</p>`:'<p>Disponível apenas para simulação, sem movimentar dinheiro.</p>'}</div><button type="button" class="btn btn--ghost" data-remove-method="${m.id}">Remover</button></article>`).join(''):D.empty('Nenhuma forma de pagamento cadastrada. Adicione cartão de teste, Pix ou dinheiro.');
+       $('#payment-method-list').innerHTML=Payments.methods.length?Payments.methods.map(m=>`<article class="payment-method-card"><div><span class="chip">${t('pay.chip')}</span><h3>${D.escape(Payments.label(m))}</h3>${m.ultimos4?`<p>${D.escape(m.titular)} · ${D.escape(m.bandeira)} · ${t('pay.expires')} ${D.escape(m.validade)}</p>`:'<p>'+t('pay.simOnly')+'</p>'}</div><button type="button" class="btn btn--ghost" data-remove-method="${m.id}">${t('pay.remove')}</button></article>`).join(''):D.empty(t('pay.none'));
      },
      cardFields() {
        const form=$('#payment-method-form'),card=['credito','debito'].includes(form.elements.tipo.value);
        $('#payment-card-fields').hidden=!card;$('#payment-card-fields').disabled=!card;
        $('#payment-method-help').hidden=card;
-       $('#payment-method-help').textContent=form.elements.tipo.value==='pix'?'Pix demonstrativo: você não precisa informar uma chave para pagar. Nenhum código transferível ou QR Code bancário será gerado.':'Dinheiro demonstrativo: registra apenas sua preferência. Não confirma recebimento de dinheiro.';
+       $('#payment-method-help').textContent=t(form.elements.tipo.value==='pix'?'pay.helpPix':'pay.helpCash');
        if(!card){form.elements.numero.value='';form.elements.cvv.value='';}
      },
      openMethod() {
@@ -1167,42 +1401,42 @@
        event.preventDefault();if(Payments.pending)return;
        const form=event.target,fields=form.elements,card=['credito','debito'].includes(fields.tipo.value),message=$('#payment-form-message');
        if(!form.reportValidity())return;
-       if(card&&!Payments.validCard(fields.numero.value)){message.textContent='Informe um número de cartão de teste válido. Exemplo: 4242 4242 4242 4242.';return;}
+       if(card&&!Payments.validCard(fields.numero.value)){message.textContent=t('pay.invalidCard');return;}
        // Whitelist explícita: número completo e CVV nunca entram no corpo da requisição.
        const body={tipo:fields.tipo.value,apelido:fields.apelido.value.trim()};
        if(card)Object.assign(body,{titular:fields.titular.value.trim(),bandeira:fields.bandeira.value,ultimos4:fields.numero.value.replace(/\D/g,'').slice(-4),validade:fields.validade.value});
        fields.numero.value='';fields.cvv.value='';
-       Payments.pending=true;const submit=form.querySelector('[type=submit]');submit.disabled=true;message.textContent='Salvando preferência demonstrativa…';
+       Payments.pending=true;const submit=form.querySelector('[type=submit]');submit.disabled=true;message.textContent=t('pay.saving');
        try {
          await window.DafixData.request('/api/pagamentos/metodos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-         $('#payment-method-dialog').close();await Payments.load();$('#payment-method-message').textContent='Forma de pagamento demonstrativa cadastrada.';
-       } catch(error) { message.textContent=error.message+' Se necessário, preencha novamente os dados de teste.'; }
+         $('#payment-method-dialog').close();await Payments.load();$('#payment-method-message').textContent=t('pay.saved');
+       } catch(error) { message.textContent=error.message+' '+t('pay.refill'); }
        finally {Payments.pending=false;submit.disabled=false;}
      },
      async openOrder(id) {
        if(Payments.pending)return;
        const order=state.orders.find(o=>o.id===id);if(!order||order.pagamento_simulado_em)return;
-       Payments.orderId=id;$('#order-payment-summary').textContent='Pedido #'+id+' · '+order.servico+' · '+window.DafixData.money(order.preco_unitario);
-       $('#order-payment-message').textContent='Carregando suas formas de pagamento…';$('#order-payment-method').replaceChildren();$('#order-payment-form [type=submit]').disabled=true;$('#order-payment-help').textContent='';$('#order-payment-dialog').showModal();
+       Payments.orderId=id;$('#order-payment-summary').textContent=t('order.number').replace('%s',id)+' · '+order.servico+' · '+window.DafixData.money(order.preco_unitario);
+       $('#order-payment-message').textContent=t('pay.loadingYours');$('#order-payment-method').replaceChildren();$('#order-payment-form [type=submit]').disabled=true;$('#order-payment-help').textContent='';$('#order-payment-dialog').showModal();
        try {
          Payments.methods=await window.DafixData.list('/api/pagamentos/metodos');
          $('#order-payment-method').innerHTML=Payments.methods.map(m=>`<option value="${m.id}">${window.DafixData.escape(Payments.label(m))}</option>`).join('');
          $('#order-payment-form [type=submit]').disabled=!Payments.methods.length;
-         $('#order-payment-message').textContent=Payments.methods.length?'':'Cadastre uma forma de pagamento para continuar.';
+         $('#order-payment-message').textContent=Payments.methods.length?'':t('pay.needMethod');
          Payments.paymentHelp();
        } catch(error) {$('#order-payment-message').textContent=error.message;}
      },
      paymentHelp() {
        const method=Payments.methods.find(m=>m.id===Number($('#order-payment-method').value));
-       $('#order-payment-help').textContent=!method?'':method.tipo==='pix'?'Pix de demonstração: confirme abaixo para registrar a simulação. Não será gerado um código bancário.':method.tipo==='dinheiro'?'A confirmação registra uma simulação; não comprova recebimento de dinheiro.':'O cartão cadastrado é uma preferência demonstrativa. Nenhuma transação será enviada a um banco.';
+       $('#order-payment-help').textContent=!method?'':t(method.tipo==='pix'?'pay.simHelpPix':method.tipo==='dinheiro'?'pay.simHelpCash':'pay.simHelpCard');
      },
      async pay(event) {
        event.preventDefault();if(Payments.pending||!event.target.reportValidity())return;
        const method=Payments.methods.find(m=>m.id===Number($('#order-payment-method').value));if(!method)return;
-       Payments.pending=true;const submit=event.target.querySelector('[type=submit]');submit.disabled=true;$('#order-payment-message').textContent='Registrando simulação…';
+       Payments.pending=true;const submit=event.target.querySelector('[type=submit]');submit.disabled=true;$('#order-payment-message').textContent=t('pay.simSaving');
        try {
          await window.DafixData.request('/api/os/'+Payments.orderId+'/pagamento',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({metodo_id:method.id})});
-         $('#order-payment-dialog').close();await loadRegisteredData();Toast.show('Pagamento simulado registrado. Nenhum valor foi cobrado.','success');
+         $('#order-payment-dialog').close();await loadRegisteredData();Toast.show(t('pay.simDone'),'success');
        } catch(error){$('#order-payment-message').textContent=error.message;}
        finally {Payments.pending=false;submit.disabled=false;}
      },
@@ -1219,7 +1453,7 @@
        };
        $('#payment-remove-confirm').onclick=async event=>{
          if(Payments.pending)return;Payments.pending=true;event.target.disabled=true;
-         try {await window.DafixData.request('/api/pagamentos/metodos/'+Payments.removeId,{method:'DELETE'});$('#payment-remove-dialog').close();await Payments.load();$('#payment-method-message').textContent='Forma de pagamento removida.';}
+         try {await window.DafixData.request('/api/pagamentos/metodos/'+Payments.removeId,{method:'DELETE'});$('#payment-remove-dialog').close();await Payments.load();$('#payment-method-message').textContent=t('pay.removed');}
          catch(error){$('#payment-remove-message').textContent=error.message;}
          finally{Payments.pending=false;event.target.disabled=false;}
        };
@@ -1232,19 +1466,19 @@
      pending:false,orderId:null,
      open(id) {
        const order=state.orders.find(o=>o.id===id);if(!order||!order.concluido_funcionario_em||order.confirmado_cliente_em)return;
-       Rating.orderId=id;$('#rating-form').reset();$('#rating-message').textContent='';$('#rating-service').textContent='Pedido #'+id+' · '+order.servico;$('#rating-dialog').showModal();
+       Rating.orderId=id;$('#rating-form').reset();$('#rating-message').textContent='';$('#rating-service').textContent=t('order.number').replace('%s',id)+' · '+order.servico;$('#rating-dialog').showModal();
      },
      openForPending() {
        const order=state.orders.find(o=>o.concluido_funcionario_em&&!o.confirmado_cliente_em);
-       if(order)Rating.open(order.id);else Toast.show('Nenhum serviço aguardando sua avaliação.');
+       if(order)Rating.open(order.id);else Toast.show(t('rate.none'));
      },
      init() {
        $('#rating-form').onsubmit=async event=>{
          event.preventDefault();if(Rating.pending||!event.target.reportValidity())return;
-         const form=event.target,submit=form.querySelector('[type=submit]');Rating.pending=true;submit.disabled=true;$('#rating-message').textContent='Salvando avaliação e confirmação…';
+         const form=event.target,submit=form.querySelector('[type=submit]');Rating.pending=true;submit.disabled=true;$('#rating-message').textContent=t('rate.saving');
          try {
            await window.DafixData.request('/api/os/'+Rating.orderId+'/avaliar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nota:Number(new FormData(form).get('nota')),comentario:form.elements.comentario.value.trim()})});
-           $('#rating-dialog').close();await loadRegisteredData();Toast.show('Avaliação enviada e conclusão confirmada.','success');
+           $('#rating-dialog').close();await loadRegisteredData();Toast.show(t('rate.done'),'success');
          } catch(error) {$('#rating-message').textContent=error.message;}
          finally{Rating.pending=false;submit.disabled=false;}
        };
@@ -1321,7 +1555,7 @@
      Rating.init();
      Orders.init();
      Services.init();
-     document.addEventListener('dafix:order-created', async event => { await loadRegisteredData(); Navigation.go('orders'); Toast.show('Pedido #'+event.detail.id+' registrado.', 'success'); });
+     document.addEventListener('dafix:order-created', async event => { await loadRegisteredData(); Navigation.go('orders'); Toast.show(t('order.created').replace('%s',event.detail.id), 'success'); });
      Reports.render();
 
      Language.init();
@@ -1347,11 +1581,11 @@
        state.orders=orders;
        state.favorites=state.favorites.filter(id=>SERVICES.some(s=>s.id===id));
        Overview.render();Orders.render();Services.render();Profile.fill();
-       $('#notif-list').innerHTML='<li class="data-empty">Nenhuma notificação registrada.</li>';
-       $('#notif-dropdown-list').innerHTML='<li class="data-empty">Nenhuma notificação registrada.</li>';
+       $('#notif-list').innerHTML='<li class="data-empty">'+t('notif.none')+'</li>';
+       $('#notif-dropdown-list').innerHTML='<li class="data-empty">'+t('notif.none')+'</li>';
      } catch(error) {
        ['#recent-orders','#orders-list','#services-grid'].forEach(selector=>$(selector).innerHTML=D.empty(error.message));
-       $('#stats-grid').innerHTML=D.empty('Resumo indisponível.');
+       $('#stats-grid').innerHTML=D.empty(t('stat.unavailable'));
        $('#services-empty').hidden=true;$('#orders-empty').hidden=true;
      }
    }

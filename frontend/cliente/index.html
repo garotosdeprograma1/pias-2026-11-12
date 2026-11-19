@@ -18,7 +18,7 @@
 
   <div class="app-shell" id="app-shell">
     <!-- ===================== SIDEBAR ===================== -->
-    <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+    <aside class="sidebar" id="sidebar" aria-label="Navegação principal" data-i18n-aria="aria.mainNav">
       <div class="sidebar__brand">
         <img src="/assets/images/logo.png" alt="DaFix" class="brand__logo" width="40" height="40">
         <span class="brand__text">
@@ -57,7 +57,7 @@
 
 
       <div class="sidebar__user">
-        <button class="avatar avatar--sm js-avatar" id="sidebar-avatar" aria-label="Perfil"><span class="avatar__initials"></span><span class="avatar__status"></span></button>
+        <button class="avatar avatar--sm js-avatar" id="sidebar-avatar" aria-label="Perfil" data-i18n-aria="aria.profile"><span class="avatar__initials"></span><span class="avatar__status"></span></button>
         <div class="sidebar__user-info">
           <strong id="sidebar-username">—</strong>
           <span data-i18n="sidebar.plan">Cliente</span>
@@ -70,7 +70,7 @@
     <div class="app-main">
       <header class="topbar">
         <div class="topbar__left">
-          <button class="icon-btn topbar__menu" id="menu-btn" aria-label="Abrir menu" data-testid="menu-toggle">
+          <button class="icon-btn topbar__menu" id="menu-btn" aria-label="Abrir menu" data-i18n-aria="aria.openMenu" data-testid="menu-toggle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
           <div class="topbar__title">
@@ -79,18 +79,18 @@
           </div>
         </div>
         <div class="topbar__right">
-          <button class="ctrl-btn" id="lang-toggle" aria-label="Mudar idioma / Change language" data-testid="lang-toggle">
+          <button class="ctrl-btn" id="lang-toggle" aria-label="Mudar idioma para inglês" data-i18n-aria="aria.language" data-testid="lang-toggle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-label">EN</span>
           </button>
-          <button class="icon-btn" id="theme-toggle" aria-label="Alternar tema claro/escuro" data-testid="theme-toggle">
+          <button class="icon-btn" id="theme-toggle" aria-label="Alternar tema claro/escuro" data-i18n-aria="aria.theme" data-testid="theme-toggle">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
 
           <!-- Notificações (dropdown) -->
           <div class="notifications">
-            <button class="icon-btn" id="notif-btn" aria-label="Notificações" aria-expanded="false" data-testid="notif-btn">
+            <button class="icon-btn" id="notif-btn" aria-label="Notificações" data-i18n-aria="aria.notifications" aria-expanded="false" data-testid="notif-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
               <span class="notif-badge" id="notif-badge" data-testid="notif-badge">0</span>
             </button>
@@ -106,8 +106,8 @@
             </div>
           </div>
 
-          <button class="avatar avatar--sm js-avatar topbar__avatar" id="topbar-avatar" data-testid="topbar-avatar" aria-label="Abrir perfil"><span class="avatar__initials"></span><span class="avatar__status"></span></button>
-          <button class="icon-btn topbar__logout" type="button" data-action="logout" data-testid="header-logout" aria-label="Sair da conta" title="Sair da conta">
+          <button class="avatar avatar--sm js-avatar topbar__avatar" id="topbar-avatar" data-testid="topbar-avatar" aria-label="Abrir perfil" data-i18n-aria="aria.openProfile"><span class="avatar__initials"></span><span class="avatar__status"></span></button>
+          <button class="icon-btn topbar__logout" type="button" data-action="logout" data-testid="header-logout" aria-label="Sair da conta" data-i18n-aria="aria.logout" title="Sair da conta" data-i18n-title="aria.logout">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M14 8l4 4-4 4M8 12h10"/></svg>
           </button>
         </div>
@@ -117,7 +117,7 @@
 
         <!-- ===================== VIEW: MINHA CONTA ===================== -->
         <section class="view is-active" id="view-account" aria-labelledby="topbar-title">
-          <div class="tabs" role="tablist" aria-label="Seções da conta">
+          <div class="tabs" role="tablist" aria-label="Seções da conta" data-i18n-aria="aria.accountSections">
             <button class="tab is-active" id="tab-overview" role="tab" aria-selected="true" data-tab="overview" data-testid="tab-overview">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
               <span data-i18n="tabs.overview">Visão Geral</span>
@@ -190,7 +190,7 @@
               <div class="profile__cover"></div>
               <div class="profile__head">
                 <div class="profile__id">
-                  <button class="avatar avatar--xl js-avatar" id="profile-avatar" data-testid="profile-avatar-btn" aria-label="Alterar foto de perfil">
+                  <button class="avatar avatar--xl js-avatar" id="profile-avatar" data-testid="profile-avatar-btn" aria-label="Alterar foto de perfil" data-i18n-aria="aria.changePhoto">
                     <span class="avatar__initials"></span>
                     <span class="avatar__status"></span>
                     <span class="avatar__edit" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
@@ -237,7 +237,7 @@
                       </div>
                       <div class="field">
                         <label for="f-phone" data-i18n="profile.phone">Telefone</label>
-                        <input type="tel" id="f-phone" name="phone" disabled data-testid="profile-phone-input" autocomplete="tel" placeholder="Não informado" />
+                        <input type="tel" id="f-phone" name="phone" disabled data-testid="profile-phone-input" autocomplete="tel" placeholder="Não informado" data-i18n-ph="profile.notProvided" />
                         <span class="field__error" id="err-phone" role="alert"></span>
                       </div>
                       <div class="field">
@@ -299,7 +299,7 @@
             <div>
               <p data-i18n="orders.subtitle">Acompanhe e gerencie todos os seus pedidos em um só lugar.</p>
             </div>
-            <button type="button" class="btn btn--ghost" id="client-orders-refresh">Atualizar pedidos</button>
+            <button type="button" class="btn btn--ghost" id="client-orders-refresh" data-i18n="orders.refresh">Atualizar pedidos</button>
           </div>
 
           <div class="orders-list" id="orders-list" data-testid="orders-list"></div>
@@ -311,15 +311,15 @@
         </section>
 
         <section class="view" id="view-payments">
-          <div class="page-header payment-heading"><div><h2>Formas de pagamento</h2><p>Cadastre suas preferências para testar o pagamento dos pedidos.</p></div><button type="button" class="btn btn--primary" id="payment-method-open">Adicionar forma de pagamento</button></div>
-          <p class="demo-notice">Ambiente demonstrativo: nenhum valor será cobrado. Use somente dados de teste nos cartões. Não há transferência Pix nem processamento bancário.</p>
+          <div class="page-header payment-heading"><div><h2 data-i18n="pay.title">Formas de pagamento</h2><p data-i18n="pay.subtitle">Cadastre suas preferências para testar o pagamento dos pedidos.</p></div><button type="button" class="btn btn--primary" id="payment-method-open" data-i18n="pay.add">Adicionar forma de pagamento</button></div>
+          <p class="demo-notice" data-i18n="pay.demo">Ambiente demonstrativo: nenhum valor será cobrado. Use somente dados de teste nos cartões. Não há transferência Pix nem processamento bancário.</p>
           <p id="payment-method-message" role="status" aria-live="polite"></p>
           <div id="payment-method-list" class="payment-method-list"></div>
         </section>
 
         <!-- ===================== VIEW: SERVIÇOS ===================== -->
         <section class="view" id="view-services">
-          <div class="tabs" role="tablist" aria-label="Catálogo e favoritos">
+          <div class="tabs" role="tablist" aria-label="Catálogo e favoritos" data-i18n-aria="aria.catalogTabs">
             <button class="tab is-active" id="subtab-catalog" role="tab" aria-selected="true" data-subtab="catalog" data-testid="subtab-catalog">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
               <span data-i18n="services.catalog">Catálogo</span>
@@ -335,11 +335,11 @@
           <div class="filter-bar">
             <div class="search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-              <input type="search" id="service-search" data-testid="service-search" placeholder="Buscar serviços..." aria-label="Buscar serviços" />
+              <input type="search" id="service-search" data-testid="service-search" placeholder="Buscar serviços..." aria-label="Buscar serviços" data-i18n-aria="aria.searchServices" />
             </div>
-            <select class="filter-select" id="filter-category" data-testid="filter-category" aria-label="Filtrar por categoria"></select>
-            <select class="filter-select" id="filter-price" data-testid="filter-price" aria-label="Filtrar por preço"></select>
-            <select class="filter-select" id="filter-sort" data-testid="filter-sort" aria-label="Ordenar por"></select>
+            <select class="filter-select" id="filter-category" data-testid="filter-category" aria-label="Filtrar por categoria" data-i18n-aria="aria.filterCategory"></select>
+            <select class="filter-select" id="filter-price" data-testid="filter-price" aria-label="Filtrar por preço" data-i18n-aria="aria.filterPrice"></select>
+            <select class="filter-select" id="filter-sort" data-testid="filter-sort" aria-label="Ordenar por" data-i18n-aria="aria.sort"></select>
           </div>
 
           <div class="services-grid" id="services-grid" data-testid="services-grid"></div>
@@ -363,32 +363,32 @@
   </div>
 
   <dialog id="payment-method-dialog" class="request-dialog flow-dialog" aria-labelledby="payment-method-title">
-    <div class="data-tools"><h2 id="payment-method-title">Adicionar forma de pagamento</h2><button type="button" data-flow-close="payment-method-dialog">Fechar</button></div>
+    <div class="data-tools"><h2 id="payment-method-title" data-i18n="pay.add">Adicionar forma de pagamento</h2><button type="button" data-flow-close="payment-method-dialog" data-i18n="common.close">Fechar</button></div>
     <form id="payment-method-form" class="record-form" autocomplete="off">
-      <p class="demo-notice">Cadastro demonstrativo. Nenhuma cobrança será feita. O número e o código de segurança são descartados e nunca enviados ao servidor.</p>
-      <label>Forma de pagamento<select name="tipo" required><option value="credito">Cartão de crédito</option><option value="debito">Cartão de débito</option><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option></select></label>
-      <label>Apelido (opcional)<input name="apelido" maxlength="60" placeholder="Ex.: cartão de teste"></label>
-      <fieldset id="payment-card-fields"><legend>Cartão de teste</legend>
-        <label>Nome no cartão<input name="titular" maxlength="100" minlength="3" autocomplete="off" required></label>
-        <label>Número do cartão de teste<input name="numero" inputmode="numeric" maxlength="23" autocomplete="off" placeholder="4242 4242 4242 4242" required></label>
-        <small>Exemplo para testar: 4242 4242 4242 4242.</small>
-        <div class="payment-field-grid"><label>Validade<input name="validade" type="month" required></label><label>Código de segurança de teste<input name="cvv" type="password" inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4" autocomplete="off" placeholder="123" required></label></div>
-        <label>Bandeira<select name="bandeira"><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="elo">Elo</option><option value="amex">American Express</option><option value="outro">Outra</option></select></label>
+      <p class="demo-notice" data-i18n="pay.formDemo">Cadastro demonstrativo. Nenhuma cobrança será feita. O número e o código de segurança são descartados e nunca enviados ao servidor.</p>
+      <label><span data-i18n="pay.method">Forma de pagamento</span><select name="tipo" required><option value="credito" data-i18n="pay.type.credito">Cartão de crédito</option><option value="debito" data-i18n="pay.type.debito">Cartão de débito</option><option value="pix" data-i18n="pay.type.pix">Pix</option><option value="dinheiro" data-i18n="pay.type.dinheiro">Dinheiro</option></select></label>
+      <label><span data-i18n="pay.nickname">Apelido (opcional)</span><input name="apelido" maxlength="60" placeholder="Ex.: cartão de teste" data-i18n-ph="pay.nicknamePh"></label>
+      <fieldset id="payment-card-fields"><legend data-i18n="pay.testCard">Cartão de teste</legend>
+        <label><span data-i18n="pay.holder">Nome no cartão</span><input name="titular" maxlength="100" minlength="3" autocomplete="off" required></label>
+        <label><span data-i18n="pay.number">Número do cartão de teste</span><input name="numero" inputmode="numeric" maxlength="23" autocomplete="off" placeholder="4242 4242 4242 4242" required></label>
+        <small data-i18n="pay.example">Exemplo para testar: 4242 4242 4242 4242.</small>
+        <div class="payment-field-grid"><label><span data-i18n="pay.expiry">Validade</span><input name="validade" type="month" required></label><label><span data-i18n="pay.cvv">Código de segurança de teste</span><input name="cvv" type="password" inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4" autocomplete="off" placeholder="123" required></label></div>
+        <label><span data-i18n="pay.brand">Bandeira</span><select name="bandeira"><option value="visa">Visa</option><option value="mastercard">Mastercard</option><option value="elo">Elo</option><option value="amex">American Express</option><option value="outro" data-i18n="pay.brandOther">Outra</option></select></label>
       </fieldset>
-      <p id="payment-method-help" hidden>Esta opção será usada apenas para simulação. Para pagar por Pix, o pagador não precisa cadastrar uma chave.</p>
+      <p id="payment-method-help" hidden data-i18n="pay.helpDefault">Esta opção será usada apenas para simulação. Para pagar por Pix, o pagador não precisa cadastrar uma chave.</p>
       <p id="payment-form-message" role="status" aria-live="polite"></p>
-      <button type="submit" class="btn btn--primary">Salvar forma de pagamento</button>
+      <button type="submit" class="btn btn--primary" data-i18n="pay.save">Salvar forma de pagamento</button>
     </form>
   </dialog>
   <dialog id="order-payment-dialog" class="request-dialog flow-dialog" aria-labelledby="order-payment-title">
-    <div class="data-tools"><h2 id="order-payment-title">Simular pagamento</h2><button type="button" data-flow-close="order-payment-dialog">Fechar</button></div>
-    <form id="order-payment-form" class="record-form"><p id="order-payment-summary"></p><p class="demo-notice">Simulação — sem cobrança. Nenhum dinheiro será movimentado.</p><label>Forma de pagamento<select name="metodo_id" id="order-payment-method" required></select></label><p id="order-payment-help"></p><p id="order-payment-message" role="status" aria-live="polite"></p><div class="payment-actions"><button type="button" id="order-payment-add" class="btn btn--ghost">Cadastrar outra forma</button><button type="submit" class="btn btn--primary">Confirmar pagamento simulado</button></div></form>
+    <div class="data-tools"><h2 id="order-payment-title" data-i18n="pay.simTitle">Simular pagamento</h2><button type="button" data-flow-close="order-payment-dialog" data-i18n="common.close">Fechar</button></div>
+    <form id="order-payment-form" class="record-form"><p id="order-payment-summary"></p><p class="demo-notice" data-i18n="pay.simDemo">Simulação — sem cobrança. Nenhum dinheiro será movimentado.</p><label><span data-i18n="pay.method">Forma de pagamento</span><select name="metodo_id" id="order-payment-method" required></select></label><p id="order-payment-help"></p><p id="order-payment-message" role="status" aria-live="polite"></p><div class="payment-actions"><button type="button" id="order-payment-add" class="btn btn--ghost" data-i18n="pay.addOther">Cadastrar outra forma</button><button type="submit" class="btn btn--primary" data-i18n="pay.confirmSim">Confirmar pagamento simulado</button></div></form>
   </dialog>
   <dialog id="rating-dialog" class="request-dialog flow-dialog" aria-labelledby="rating-dialog-title">
-    <div class="data-tools"><h2 id="rating-dialog-title">Avaliar e confirmar conclusão</h2><button type="button" data-flow-close="rating-dialog">Fechar</button></div>
-    <form id="rating-form" class="record-form"><p id="rating-service"></p><p>O profissional marcou este serviço como feito. Ao enviar sua avaliação, você também confirma a conclusão do atendimento.</p><fieldset class="rating-options"><legend>Como foi o serviço?</legend><label><input type="radio" name="nota" value="1" required>1 ★</label><label><input type="radio" name="nota" value="2">2 ★</label><label><input type="radio" name="nota" value="3">3 ★</label><label><input type="radio" name="nota" value="4">4 ★</label><label><input type="radio" name="nota" value="5">5 ★</label></fieldset><label>Comentário (opcional)<textarea name="comentario" maxlength="1000" rows="4" placeholder="Conte como foi o atendimento."></textarea></label><p id="rating-message" role="status" aria-live="polite"></p><button type="submit" class="btn btn--primary">Enviar avaliação e concluir</button></form>
+    <div class="data-tools"><h2 id="rating-dialog-title" data-i18n="rate.title">Avaliar e confirmar conclusão</h2><button type="button" data-flow-close="rating-dialog" data-i18n="common.close">Fechar</button></div>
+    <form id="rating-form" class="record-form"><p id="rating-service"></p><p data-i18n="rate.intro">O profissional marcou este serviço como feito. Ao enviar sua avaliação, você também confirma a conclusão do atendimento.</p><fieldset class="rating-options"><legend data-i18n="rate.legend">Como foi o serviço?</legend><label><input type="radio" name="nota" value="1" required>1 ★</label><label><input type="radio" name="nota" value="2">2 ★</label><label><input type="radio" name="nota" value="3">3 ★</label><label><input type="radio" name="nota" value="4">4 ★</label><label><input type="radio" name="nota" value="5">5 ★</label></fieldset><label><span data-i18n="rate.comment">Comentário (opcional)</span><textarea name="comentario" maxlength="1000" rows="4" placeholder="Conte como foi o atendimento." data-i18n-ph="rate.commentPh"></textarea></label><p id="rating-message" role="status" aria-live="polite"></p><button type="submit" class="btn btn--primary" data-i18n="rate.submit">Enviar avaliação e concluir</button></form>
   </dialog>
-  <dialog id="payment-remove-dialog" class="request-dialog flow-dialog" aria-labelledby="payment-remove-title"><h2 id="payment-remove-title">Remover forma de pagamento?</h2><p id="payment-remove-summary"></p><p>Os registros de pagamentos simulados anteriores serão preservados.</p><p id="payment-remove-message" role="status"></p><div class="payment-actions"><button type="button" class="btn btn--ghost" data-flow-close="payment-remove-dialog">Cancelar</button><button type="button" class="btn btn--primary" id="payment-remove-confirm">Confirmar remoção</button></div></dialog>
+  <dialog id="payment-remove-dialog" class="request-dialog flow-dialog" aria-labelledby="payment-remove-title"><h2 id="payment-remove-title" data-i18n="pay.removeTitle">Remover forma de pagamento?</h2><p id="payment-remove-summary"></p><p data-i18n="pay.removeText">Os registros de pagamentos simulados anteriores serão preservados.</p><p id="payment-remove-message" role="status"></p><div class="payment-actions"><button type="button" class="btn btn--ghost" data-flow-close="payment-remove-dialog" data-i18n="common.cancel">Cancelar</button><button type="button" class="btn btn--primary" id="payment-remove-confirm" data-i18n="pay.removeConfirm">Confirmar remoção</button></div></dialog>
 
   <!-- ===================== MODAL: AVALIAÇÃO ===================== -->
 
@@ -397,7 +397,7 @@
   <div class="modal" id="photo-modal" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
     <div class="modal__backdrop" data-close="photo-modal"></div>
     <div class="modal__dialog" data-testid="photo-modal">
-      <button class="modal__close" data-close="photo-modal" aria-label="Fechar" data-testid="photo-close">
+      <button class="modal__close" data-close="photo-modal" aria-label="Fechar" data-i18n-aria="common.close" data-testid="photo-close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
       <div class="modal__head-block">
@@ -443,19 +443,20 @@
   <div class="toasts" id="toast-container" aria-live="polite"></div>
 
   <script src="/assets/js/account-session.js"></script>
+  <script src="/assets/js/server-messages.js"></script>
   <script src="/assets/js/data-source.js"></script>
   <script src="/cliente/js/cliente.js" type="module"></script>
 
 
 <dialog id="request-dialog" class="request-dialog" aria-labelledby="request-title">
-  <div class="data-tools"><h2 id="request-title">Solicitar serviço</h2><button type="button" data-request-close>Fechar</button></div>
+  <div class="data-tools"><h2 id="request-title" data-i18n="services.request">Solicitar serviço</h2><button type="button" data-request-close data-i18n="common.close">Fechar</button></div>
   <form id="request-form" class="record-form">
-    <p>Seu pedido ficará disponível para os profissionais. Você será informado aqui quando alguém aceitar.</p>
-    <label>Data desejada<input id="request-date" name="data" type="date" required></label>
-    <label>Endereço do atendimento<input name="local" autocomplete="street-address" minlength="3" maxlength="1000" required></label>
-    <label>Descreva o que precisa<textarea name="descricao" rows="4" minlength="3" maxlength="1000" required></textarea></label>
+    <p data-i18n="req.intro">Seu pedido ficará disponível para os profissionais. Acompanhe em Pedidos quando alguém aceitar.</p>
+    <label><span data-i18n="order.date">Data desejada</span><input id="request-date" name="data" type="date" required></label>
+    <label><span data-i18n="req.address">Endereço do atendimento</span><input name="local" autocomplete="street-address" minlength="3" maxlength="1000" required></label>
+    <label><span data-i18n="req.desc">Descreva o que precisa</span><textarea name="descricao" rows="4" minlength="3" maxlength="1000" required></textarea></label>
     <p id="request-message" role="status"></p>
-    <button type="submit" class="btn btn--primary">Confirmar solicitação</button>
+    <button type="submit" class="btn btn--primary" data-i18n="req.submit">Confirmar solicitação</button>
   </form>
 </dialog>
 <script src="/cliente/js/solicitacao.js" defer></script>

@@ -57,6 +57,23 @@
         "type.pj.sub": "Prestadora de serviços, com CNPJ",
         "v.cnpj": "CNPJ inválido. Confira os 14 dígitos.",
         "v.company": "Informe o nome da empresa (mínimo de 3 caracteres).",
+        "aria.about": "Sobre a plataforma Dafix",
+        "aria.profileSelect": "Selecione seu perfil",
+        "aria.notifications": "Notificações",
+        "aria.authTabs": "Login ou Cadastro",
+        "aria.close": "Fechar",
+        "aria.auth": "Autenticação",
+        "aria.theme": "Alternar tema claro/escuro",
+        "aria.legal": "Ajuda e documentos legais",
+        "aria.adminAccess": "Acesso administrativo",
+        "title.adminShortcut": "Área administrativa",
+        "aria.showPassword": "Mostrar senha",
+        "aria.hidePassword": "Ocultar senha",
+        "admin.eyebrow": "Espaço de gestão",
+        "admin.text": "Catálogo, pessoas e pedidos.",
+        "admin.open": "Abrir administração",
+        "forgot.title": "Recuperação indisponível",
+        "forgot.text": "O envio de recuperação ainda não está configurado. Fale com a equipe pela página de Contato.",
         "field.area.label": "Área de atuação",
         "field.area.ph": "Ex.: Atendimento",
         "field.confirm.label": "Confirmar senha",
@@ -152,6 +169,23 @@
         "type.pj.sub": "Service company, with CNPJ",
         "v.cnpj": "Invalid CNPJ. Check the 14 digits.",
         "v.company": "Enter the company name (at least 3 characters).",
+        "aria.about": "About the Dafix platform",
+        "aria.profileSelect": "Select your profile",
+        "aria.notifications": "Notifications",
+        "aria.authTabs": "Sign in or sign up",
+        "aria.close": "Close",
+        "aria.auth": "Authentication",
+        "aria.theme": "Toggle light/dark theme",
+        "aria.legal": "Help and legal documents",
+        "aria.adminAccess": "Administrator access",
+        "title.adminShortcut": "Administration area",
+        "aria.showPassword": "Show password",
+        "aria.hidePassword": "Hide password",
+        "admin.eyebrow": "Management area",
+        "admin.text": "Catalog, people and orders.",
+        "admin.open": "Open administration",
+        "forgot.title": "Recovery unavailable",
+        "forgot.text": "Password recovery is not set up yet. Contact the team through the Contact page.",
         "field.area.label": "Area of work",
         "field.area.ph": "e.g. Customer service",
         "field.confirm.label": "Confirm password",
@@ -238,7 +272,7 @@
       let data;
       try { data = await response.json(); }
       catch { throw new Error(t("request.error")); }
-      if (!response.ok) throw new Error(data.erro || t("request.error"));
+      if (!response.ok) throw new Error((window.DafixServerMessage ? window.DafixServerMessage(data.erro) : data.erro) || t("request.error"));
       return data;
     }
     function msg(key, vars = {}) {
@@ -253,6 +287,9 @@
       document.documentElement.lang = state.lang === "pt" ? "pt-BR" : "en";
       $$("[data-i18n]").forEach((el) => { el.textContent = t(el.getAttribute("data-i18n")); });
       $$("[data-i18n-ph]").forEach((el) => { el.placeholder = t(el.getAttribute("data-i18n-ph")); });
+      $$("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))); });
+      $$("[data-i18n-title]").forEach((el) => { el.title = t(el.getAttribute("data-i18n-title")); });
+      $$("[data-toggle-pw]").forEach((btn) => { const input = btn.parentElement.querySelector("input"); if (input) btn.setAttribute("aria-label", t(input.type === "password" ? "aria.showPassword" : "aria.hidePassword")); });
       $("#langLabel").textContent = state.lang.toUpperCase();
       $("#langToggle").setAttribute("aria-label", state.lang === "pt" ? "Mudar idioma para inglês" : "Switch language to Portuguese");
       applyTheme();
@@ -700,7 +737,7 @@ async function handleLogin() {
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     }
-    function handleForgot() { toast("info", "Recuperação indisponível", "O envio de recuperação ainda não está configurado."); }
+    function handleForgot() { toast("info", t("forgot.title"), t("forgot.text")); }
 
     document.addEventListener("DOMContentLoaded", () => { if (new URLSearchParams(location.search).get("tab") === "signup") setTimeout(() => setTab("signup"), 0); });
 
@@ -731,7 +768,7 @@ async function handleLogin() {
         btn.addEventListener("click", () => {
           const input = btn.parentElement.querySelector("input");
           input.type = input.type === "password" ? "text" : "password";
-          btn.setAttribute("aria-label", input.type === "password" ? "Mostrar senha" : "Ocultar senha");
+          btn.setAttribute("aria-label", t(input.type === "password" ? "aria.showPassword" : "aria.hidePassword"));
         });
       });
 
