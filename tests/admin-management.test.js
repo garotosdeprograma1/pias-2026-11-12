@@ -14,7 +14,7 @@ const account = {nome:'Gestora de teste', email:'gestao@example.test', cpf:'5299
 before(async () => {
   directory = fs.mkdtempSync(path.join(os.tmpdir(), 'dafix-admin-'));
   const backend = path.resolve(__dirname, '../backend');
-  for (const name of ['db.js','auth.js','criar-admin.js']) fs.copyFileSync(path.join(backend,name), path.join(directory,name));
+  for (const name of ['db.js','auth.js','criar-admin.js','servicos-demo.js']) fs.copyFileSync(path.join(backend,name), path.join(directory,name));
   fs.symlinkSync(path.join(backend,'node_modules'),path.join(directory,'node_modules'));
   const source = fs.readFileSync(path.join(backend,'server.js'),'utf8')
     .replaceAll("'../frontend'",JSON.stringify(path.resolve(__dirname,'../frontend')))
@@ -130,5 +130,22 @@ test('admin manages catalog and administrator accounts with safe failures',async
     assert(quiet.total>=1);assert(quiet.registros.every(r=>r.acao!=='acesso'));
     const stats=ok(await request('/api/admin/estatisticas',undefined,undefined,admin.cookie));
     assert(stats.recentes.length>0);assert(stats.recentes.every(r=>r.acao!=='acesso'));
+  });
+
+  await t.test('the demo catalog adds only missing services, once, and only for admins',async()=>{
+    for(const cookie of [undefined,client.cookie,staff.cookie])assert.notEqual((await request('/api/admin/servicos-demo','POST',{},cookie)).status,200);
+    // Um serviço com o mesmo nome (sem diferenciar maiúsculas) já existe e não pode ser duplicado nem alterado.
+    ok(await post('/api/servicos',{nome_servico:'troca de tomadas e interruptores',descricao:'Versão do próprio cadastro',preco_base:75},admin.cookie),201);
+    const before=ok(await request('/api/servicos')).length;
+    const first=ok(await request('/api/admin/servicos-demo','POST',{},admin.cookie));
+    assert.equal(first.total,16);assert.equal(first.existentes,1);assert.equal(first.inseridos,15);
+    const catalog=ok(await request('/api/servicos'));
+    assert.equal(catalog.length,before+15);
+    const sockets=catalog.filter(s=>s.nome_servico.toLowerCase()==='troca de tomadas e interruptores');
+    assert.equal(sockets.length,1);assert.equal(sockets[0].preco_base,75);
+    assert(catalog.every(s=>typeof s.preco_base==='number' && s.preco_base>0 && s.nome_servico.trim()));
+    const again=ok(await request('/api/admin/servicos-demo','POST',{},admin.cookie));
+    assert.equal(again.inseridos,0);assert.equal(ok(await request('/api/servicos')).length,before+15);
+    assert.equal(ok(await request('/api/admin/logs?evento=servico.catalogo_demo',undefined,undefined,admin.cookie)).total,2);
   });
 });

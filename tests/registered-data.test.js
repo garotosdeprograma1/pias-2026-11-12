@@ -16,6 +16,7 @@ before(async () => {
   fs.copyFileSync(path.join(backend, 'db.js'), path.join(directory, 'db.js'));
   fs.copyFileSync(path.join(backend, 'auth.js'), path.join(directory, 'auth.js'));
   fs.copyFileSync(path.join(backend, 'criar-admin.js'), path.join(directory, 'criar-admin.js'));
+  fs.copyFileSync(path.join(backend, 'servicos-demo.js'), path.join(directory, 'servicos-demo.js'));
 
   fs.symlinkSync(path.join(backend, 'node_modules'), path.join(directory, 'node_modules'));
   const source = fs.readFileSync(path.join(backend, 'server.js'), 'utf8')

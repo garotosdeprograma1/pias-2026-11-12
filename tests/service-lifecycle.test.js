@@ -15,7 +15,7 @@ const permissions = ['pedidos.ler','pedidos.aceitar','pedidos.concluir','servico
 before(async () => {
   directory = fs.mkdtempSync(path.join(os.tmpdir(), 'dafix-lifecycle-'));
   const backend = path.resolve(__dirname, '../backend');
-  for (const name of ['db.js','auth.js','criar-admin.js']) fs.copyFileSync(path.join(backend,name), path.join(directory,name));
+  for (const name of ['db.js','auth.js','criar-admin.js','servicos-demo.js']) fs.copyFileSync(path.join(backend,name), path.join(directory,name));
   fs.symlinkSync(path.join(backend,'node_modules'),path.join(directory,'node_modules'));
   const source = fs.readFileSync(path.join(backend,'server.js'),'utf8')
     .replaceAll("'../frontend'",JSON.stringify(path.resolve(__dirname,'../frontend')))

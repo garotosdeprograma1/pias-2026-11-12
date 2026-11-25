@@ -43,7 +43,7 @@
   }
 
   function build() {
-    root.innerHTML = '<div class="page-intro"><p>Organize os serviços que os clientes podem solicitar. O preço base é copiado para o pedido no momento da solicitação.</p><div class="page-actions"><button type="button" class="btn" data-refresh>' + U.icon('refresh') + 'Atualizar</button></div></div>' +
+    root.innerHTML = '<div class="page-intro"><p>Organize os serviços que os clientes podem solicitar. O preço base é copiado para o pedido no momento da solicitação.</p><div class="page-actions"><button type="button" class="btn" id="catalog-demo">' + U.icon('plus') + 'Adicionar serviços de demonstração</button><button type="button" class="btn" data-refresh>' + U.icon('refresh') + 'Atualizar</button></div></div>' +
       '<div class="kpi-grid" id="catalog-summary"></div>' +
       '<div class="grid-editor"><section class="card"><div class="card__head"><div><h2>Serviços publicados</h2><p id="catalog-count" role="status"></p></div><button type="button" class="btn btn--sm" id="catalog-export">' + U.icon('download') + 'Exportar CSV</button></div>' +
         '<div class="toolbar"><label class="search"><span class="sr-only">Buscar serviços</span>' + U.icon('search') + '<input class="input" id="catalog-query" type="search" placeholder="Buscar pelo nome ou descrição"></label></div><div id="catalog-list"></div></section>' +
@@ -72,10 +72,29 @@
       } catch (error) { message.textContent = error.message; }
       finally { state.saving = false; submit.disabled = false; }
     };
+    $('#catalog-demo').onclick = confirmDemo;
     $('#catalog-list').onclick = event => {
       const edit = event.target.closest('[data-edit]'), remove = event.target.closest('[data-remove]');
       if (edit) { setEditing(state.services.find(s => s.id === Number(edit.dataset.edit))); $('#editor-title').scrollIntoView({block: 'nearest', behavior: 'smooth'}); }
       if (remove) confirmRemove(state.services.find(s => s.id === Number(remove.dataset.remove)));
+    };
+  }
+  // Catálogo pronto para apresentações: 16 serviços de marido de aluguel com preços de referência.
+  function confirmDemo() {
+    U.openDialog({
+      title: 'Adicionar serviços de demonstração?', size: 'sm',
+      body: '<p class="muted">Serão adicionados até 16 serviços típicos de marido de aluguel, como instalação de chuveiro, troca de tomadas, desentupimento e montagem de móveis, com preços de referência.</p><p class="muted">Serviços com o mesmo nome que já existem não são duplicados nem alterados. Depois, você pode editar ou excluir qualquer um deles.</p><p class="form-message" id="demo-message" role="alert"></p>',
+      foot: '<button type="button" class="btn" data-dialog-close>Cancelar</button><button type="button" class="btn btn--primary" id="demo-confirm">Adicionar serviços</button>',
+    });
+    const confirm = $('#demo-confirm');
+    confirm.onclick = async () => {
+      confirm.disabled = true; U.lockDialog(true);
+      try {
+        const result = await D.request('/api/admin/servicos-demo', send('POST', {}));
+        U.lockDialog(false); U.closeDialog();
+        U.toast(result.inseridos ? U.plural(result.inseridos, 'serviço adicionado', 'serviços adicionados') + ' ao catálogo.' : 'Todos os serviços de demonstração já estavam no catálogo.');
+        await reload();
+      } catch (error) { U.lockDialog(false); $('#demo-message').textContent = error.message; confirm.disabled = false; }
     };
   }
   function confirmRemove(service) {

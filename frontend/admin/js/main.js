@@ -74,7 +74,7 @@
     login:'Entrada na conta', logout:'Saída da conta', acesso:'Página administrativa aberta',
     cadastro:'Cadastro realizado', alteracao:'Cadastro alterado', exclusao:'Registro excluído',
     'permissoes.alteradas':'Permissões alteradas', 'pedido.aceito':'Pedido aceito', 'pedido.excluido':'Pedido excluído',
-    'servico.cadastrado':'Serviço cadastrado', 'servico.alterado':'Serviço alterado', 'servico.excluido':'Serviço excluído',
+    'servico.cadastrado':'Serviço cadastrado', 'servico.alterado':'Serviço alterado', 'servico.excluido':'Serviço excluído', 'servico.catalogo_demo':'Serviços de demonstração adicionados',
     'servico.feito_pelo_funcionario':'Serviço concluído pelo profissional', 'servico.avaliado_e_confirmado':'Serviço avaliado pelo cliente',
     'pagamento.metodo_cadastrado':'Forma de pagamento cadastrada', 'pagamento.metodo_removido':'Forma de pagamento removida',
     'pagamento.simulado_sem_cobranca':'Pagamento simulado (sem cobrança)', erro_interno:'Erro interno',

@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var db = require('./db');
 var auth = require('./auth');
+var servicosDemo = require('./servicos-demo');
 
 var PORTA = Number(process.env.PORT) || 5000;
 var HOST = process.env.PORT ? '0.0.0.0' : 'localhost';
@@ -317,6 +318,12 @@ var servidor = http.createServer(async function (req, res) {
         const [count]=await sqlAll('SELECT COUNT(*) total FROM auditoria'+clause,args);
         const rows=await sqlAll('SELECT * FROM auditoria'+clause+' ORDER BY id DESC LIMIT 25 OFFSET ?',[...args,(page-1)*25]);
         return responderJson(res,200,{registros:rows,total:count.total,pagina:page});
+      }
+      // Catálogo de demonstração: acrescenta só os serviços que ainda não existem.
+      if(req.method==='POST' && caminho==='/api/admin/servicos-demo') {
+        const result=await servicosDemo.inserirCatalogo(db);
+        res.audit.action='servico.catalogo_demo';
+        return responderJson(res,200,result);
       }
       if(req.method==='GET' && caminho==='/api/admin/contatos') {
         const where=[],args=[];

@@ -56,6 +56,8 @@ Os arquivos específicos de cada área ficam junto das suas páginas, separados 
 
 `backend/db.js` cria as tabelas que ainda não existem, sem inserir registros de demonstração. O cadastro e a API gravam em `backend/banco.db`. Preserve esse arquivo para manter os dados cadastrados.
 
+O `backend/banco.db` versionado já vem com o **catálogo de demonstração** (16 serviços de marido de aluguel, descritos abaixo) e sem nenhuma conta, pedido ou mensagem. Contas de cliente, profissional e administrador são criadas normalmente pelo cadastro e pelo `criar-admin.js`.
+
 Para gravar em outro local — por exemplo, um volume persistente na hospedagem, onde o disco da aplicação é recriado a cada publicação — defina a variável de ambiente `DB_PATH` com o caminho do arquivo:
 
 ```bash
@@ -120,7 +122,16 @@ página de Contato, e peça a revisão de um profissional de direito.
 
 ## Catálogo e solicitações
 
-Na tela de login ou no menu do cliente, use **Administração**. Em **Catálogo de serviços**, cadastre o nome, a descrição (opcional) e o preço base do serviço oferecido; nenhum serviço é inserido automaticamente. Cada serviço pode ser editado ou excluído na própria lista. Alterar o preço não muda pedidos já registrados, e um serviço com pedidos vinculados não pode ser excluído, para preservar o histórico.
+Na tela de login ou no menu do cliente, use **Administração**. Em **Catálogo de serviços**, cadastre o nome, a descrição (opcional) e o preço base do serviço oferecido. Cada serviço pode ser editado ou excluído na própria lista.
+
+### Catálogo de demonstração
+
+Para apresentações, há 16 serviços prontos de marido de aluguel (instalação de chuveiro, troca de tomadas, desentupimento, montagem de móveis, suporte de TV, rejuntamento, serviços gerais por hora e outros), com descrição e preço base de referência. Eles estão em `backend/servicos-demo.js` e podem ser adicionados de duas formas:
+
+- no painel: **Catálogo de serviços → Adicionar serviços de demonstração**;
+- no terminal, na pasta do projeto: `node backend/servicos-demo.js` (respeita `DB_PATH`).
+
+Só são adicionados os serviços que ainda não existem, comparando pelo nome; nada é duplicado, alterado ou apagado, e é possível repetir quantas vezes quiser. Os preços são apenas referência e podem ser editados no painel. Alterar o preço não muda pedidos já registrados, e um serviço com pedidos vinculados não pode ser excluído, para preservar o histórico.
 
 Com pelo menos um serviço cadastrado, o cliente pode abrir **Serviços → Solicitar serviço** e informar data, endereço e descrição. O pedido fica **aguardando aceite**, sem escolher profissional. Em **Pedidos disponíveis**, os profissionais podem assumir o atendimento. O servidor permite apenas um aceite por pedido; depois disso ele aparece nos pedidos e na agenda do responsável. A data informada é uma preferência; o sistema não verifica conflitos de agenda nem processa pagamentos.
 
@@ -198,7 +209,7 @@ os estilos; `js/main.js` cuida da sessão, do tema, do menu e dos componentes co
 - Triggers de cadastro preenchem a data de novos registros. Datas de registros antigos
   ficam nulas: não é possível reconstruir a evolução histórica anterior à migração.
 
-O banco versionado não foi alterado durante o desenvolvimento. Faça backup de
+O banco versionado contém apenas o catálogo de demonstração, sem dados de pessoas. Faça backup de
 `backend/banco.db` antes de iniciar esta versão numa instalação com dados reais.
 A migração será aplicada na inicialização; não é necessário apagar ou recriar o banco.
 Logs começam a existir após esta atualização; não há recuperação de eventos passados.
